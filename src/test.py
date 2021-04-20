@@ -1,6 +1,6 @@
-from kame_code.entities import Kame, Tile, Player, Position, Direction, Flag
+from kame_code.game import Game, Tile, Player, Position, Direction, Flag
 
-k = Kame([[Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
+k = Game([[Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
@@ -11,5 +11,6 @@ k = Kame([[Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
 k.down()
 k.down()
 k.right()
+k.write_below(Tile.PURPLE)
 
 k.debug_print()
