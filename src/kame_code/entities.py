@@ -60,7 +60,7 @@ class Kame():
                 tile_string.append(tile.value)
             print(tile_string)
         print(f'player: {self.player.pos.x},{self.player.pos.y}')
-        print(self.flags)
+        print(f'flags: {", ".join([",".join([str(flag.pos.x), str(flag.pos.y)]) for flag in self.flags])}')
 
     def __remove_flags_if_below(self) -> None:
         for flag in self.flags:
