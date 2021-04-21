@@ -24,7 +24,7 @@ class WinCondition(Enum):
 
 
 class Tile(Enum):
-    EMPTY = 'empty'
+    EMPTY = 'grey'
 
     WHITE = 'white'
     BLACK = 'black'
