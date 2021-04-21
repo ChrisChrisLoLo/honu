@@ -54,12 +54,7 @@ class Flag():
         self.pos = pos
 
 
-class IGame():
-    def register_observer(self, observer: 'Display') -> None:
-        pass
-
-
-class Game(IGame):
+class Game():
     def __init__(self, level: List[List[Tile]], player: Player, flags: List[Flag]):
         self.level = level
         self.width = len(level)
@@ -86,12 +81,13 @@ class Game(IGame):
     def _add_observer(self, observer: 'Display') -> None:
         self._observers.append(observer)
 
-    def update_frame(self) -> None:
+    def update_display(self) -> None:
         for observer in self._observers:
             observer.update(self)
 
     def write_below(self, tile: Tile) -> None:
         self.level[self.player.pos.y][self.player.pos.x] = tile
+        self.update_display()
 
     def read_below(self) -> Tile:
         return self.level[self.player.pos.y][self.player.pos.x]

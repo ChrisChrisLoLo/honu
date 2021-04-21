@@ -16,4 +16,5 @@ from kame_code.functions import create_game
 
 # k.debug_print()
 
-create_game()
+k = create_game()
+k.write_below(Tile.RED)

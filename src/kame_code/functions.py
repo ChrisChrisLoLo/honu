@@ -11,4 +11,4 @@ def create_game():
                 Player(Direction.EAST, Position(0, 0)),
                 [Flag(Position(2, 2))])
     display = Display(game)
-    
+    return game

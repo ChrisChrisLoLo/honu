@@ -10,10 +10,20 @@ if TYPE_CHECKING:
 # Size of the sprites used in pixels
 SPRITE_IMAGE_PX = 1
 
-
+class TileGraphic():
+    def __init__(self,win,start_x,start_y,end_x,end_y,fill):
+        self.fill = fill
+        self.win = win
+        self.rect = Rectangle(Point(start_x,start_y),Point(end_x,end_y))
+        self.rect.setFill(fill)
+        self.rect.draw(self.win)
+    
+    def set_fill(self,fill):
+        self.fill = fill
+        self.rect.setFill(fill)
 class Display():
     def __init__(self, game: 'Game', width=800, height=600) -> None:
-        game.register_observer(self)
+        game._add_observer(self)
         self.width = width
         self.height = height
         self.game = game
@@ -48,10 +58,8 @@ class Display():
                 end_y = start_y + self.tile_size_px
                 print(tile)
                 fill = tile.value
-                rect = Rectangle(Point(start_x,start_y),Point(end_x,end_y))
-                rect.setFill(fill)
-                rect.draw(self.win)
-                mapped_row.append(rect)
+                tile_graphic = TileGraphic(self.win, start_x, start_y, end_x,end_y, fill)
+                mapped_row.append(tile_graphic)
             mapped_graphics.append(mapped_row)
         return mapped_graphics
 
@@ -74,4 +82,8 @@ class Display():
                    )
 
     def update(self, observable_game: 'Game') -> None:
-        pass
+        for i in range(len(self.tile_graphics)):
+            for j in range(len(self.tile_graphics[i])):
+                tile: TileGraphic = self.tile_graphics[i][j]
+                if tile.fill != observable_game.level[i][j].value:
+                    tile.set_fill(observable_game.level[i][j].value)
