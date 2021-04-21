@@ -1,10 +1,10 @@
-from graphics import Circle, Point, GraphWin
-
-def main():
-  win = GraphWin("My Circle", 500, 500)
-  c = Circle(Point(50,50), 10)
-  c.draw(win)
-  win.getMouse()
-  win.close()
-
-main()
+# from turtle import *
+# color('red', 'yellow')
+# begin_fill()
+# while True:
+#     forward(200)
+#     left(170)
+#     if abs(pos()) < 1:
+#         break
+# end_fill()
+# done()
