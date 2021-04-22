@@ -1,5 +1,6 @@
 from typing import List, TYPE_CHECKING
 from enum import Enum
+from time import sleep
 
 if TYPE_CHECKING:
     from kame_code.display import Display
@@ -61,6 +62,7 @@ class Game():
         self.height = len(level[0]) if len(level) > 0 else 0
         self.player = player
         self.flags = flags
+        self.speed = 0.5
         self._observers: List['Display'] = []
 
     def debug_print(self):
@@ -81,9 +83,13 @@ class Game():
     def _add_observer(self, observer: 'Display') -> None:
         self._observers.append(observer)
 
+    def set_speed(self, speed: float):
+        self.speed = speed
+
     def update_display(self) -> None:
         for observer in self._observers:
             observer.update(self)
+        sleep(self.speed)
 
     def write_below(self, tile: Tile) -> None:
         self.level[self.player.pos.y][self.player.pos.x] = tile
@@ -96,6 +102,7 @@ class Game():
         if self.player.pos.y > 0:
             self.player.pos.y -= 1
             self.__remove_flags_if_below()
+            self.update_display()
             return True
         else:
             return False
@@ -104,6 +111,7 @@ class Game():
         if self.player.pos.y < self.height:
             self.player.pos.y += 1
             self.__remove_flags_if_below()
+            self.update_display()
             return True
         else:
             return False
@@ -112,6 +120,7 @@ class Game():
         if self.player.pos.x > 0:
             self.player.pos.x -= 1
             self.__remove_flags_if_below()
+            self.update_display()
             return True
         else:
             return False
@@ -120,6 +129,7 @@ class Game():
         if self.player.pos.x < self.width:
             self.player.pos.x += 1
             self.__remove_flags_if_below()
+            self.update_display()
             return True
         else:
             return False

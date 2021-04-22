@@ -17,4 +17,10 @@ from kame_code.functions import create_game
 # k.debug_print()
 
 k = create_game()
+k.set_speed(0.5)
 k.write_below(Tile.RED)
+k.right()
+k.right()
+k.write_below(Tile.YELLOW)
+k.down()
+k.down()
