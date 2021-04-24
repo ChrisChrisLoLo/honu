@@ -40,6 +40,7 @@ class TurtleGraphic():
         self.circle = Circle(Point(center_x, center_y),
                              (tile_size_px*TURTLE_SCALE)/2)
         self.circle.setFill('green')
+        self.circle.setWidth(3)
         self.circle.setOutline('lime')
         self.circle.draw(self.win)
 
@@ -68,6 +69,7 @@ class FlagGraphic():
         self.circle = Circle(Point(center_x, center_y),
                              (tile_size_px*FLAG_SCALE)/2)
         self.circle.setFill('red')
+        self.circle.setWidth(3)
         self.circle.setOutline('black')
         self.circle.draw(self.win)
 
@@ -76,11 +78,12 @@ class FlagGraphic():
 
 
 class Display():
-    def __init__(self, game: 'Game', width=800, height=600) -> None:
+    def __init__(self, game: 'Game', width=800, height=600, sleep_time=0.2) -> None:
         game._add_observer(self)
+        self.game = game
         self.width = width
         self.height = height
-        self.game = game
+        self.sleep_time = sleep_time
 
         self.level_height = len(self.game.level)
         if self.level_height == 0:
@@ -129,7 +132,8 @@ class Display():
                 self.tile_size_px+self.level_offset_x
             flag_y = (j+0.5) * \
                 self.tile_size_px+self.level_offset_y
-            flag_graphics.append(FlagGraphic(self.win, flag_x, flag_y, i, j, self.tile_size_px))
+            flag_graphics.append(FlagGraphic(
+                self.win, flag_x, flag_y, i, j, self.tile_size_px))
         return flag_graphics
 
     def map_turtle_to_graphics(self) -> TurtleGraphic:
@@ -140,15 +144,6 @@ class Display():
         turtle_y = (j+0.5) * \
             self.tile_size_px+self.level_offset_y
         return TurtleGraphic(self.win, turtle_x, turtle_y, i, j, self.tile_size_px)
-
-    # def draw_frame(self) -> None:
-    #     level_height = len(self.game.level)
-    #     if level_height == 0:
-    #         raise Exception('The level cannot be empty!')
-    #     level_width = len(self.game.level[0])
-
-    #     tile_scale = self.calc_tile_scale(level_height, level_width)
-    #     tile_scale_px = tile_scale * SPRITE_IMAGE_PX
 
     def calc_tile_scale(self) -> int:
         """
@@ -167,16 +162,25 @@ class Display():
                 if tile.fill != observable_game.level[i][j].value:
                     tile.set_fill(observable_game.level[i][j].value)
 
-        flag_coords = {f'{flag.pos.x},{flag.pos.y}' for flag in observable_game.flags}
-        
+        flag_coords = {
+            f'{flag.pos.x},{flag.pos.y}' for flag in observable_game.flags}
+
         remove_list: List[FlagGraphic] = []
         for flag_graphic in self.flag_graphics:
             if f'{flag_graphic.i},{flag_graphic.j}' not in flag_coords:
                 flag_graphic.undraw()
                 remove_list.append(flag_graphic)
-        
+
         for flag_graphic in remove_list:
             self.flag_graphics.remove(flag_graphic)
 
         self.turtle_graphics.move_to_tile(
             observable_game.player.pos.x, observable_game.player.pos.y)
+
+        self.pause()
+
+    def pause(self):
+        """
+        Pause for a given amount of time.
+        """
+        sleep(self.sleep_time)

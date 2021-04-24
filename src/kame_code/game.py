@@ -62,7 +62,6 @@ class Game():
         self.height = len(level[0]) if len(level) > 0 else 0
         self.player = player
         self.flags = flags
-        self.speed = 0.5
         self._observers: List['Display'] = []
 
     def debug_print(self):
@@ -89,7 +88,6 @@ class Game():
     def update_display(self) -> None:
         for observer in self._observers:
             observer.update(self)
-        sleep(self.speed)
 
     def write_below(self, tile: Tile) -> None:
         self.level[self.player.pos.y][self.player.pos.x] = tile
