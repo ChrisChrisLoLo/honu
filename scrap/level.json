@@ -4,6 +4,7 @@
   "levelVersion":"1.0.0",
   "libVersion":"1.0.0",
   "tags": [],
+  "winCondition": "get_all_flags",
   "testCases": [
     {
       "name":"base case",
@@ -37,6 +38,5 @@
         "flags": [{ "pos": { "x": 2, "y": 1 } }]
       }
     }
-  ],
-  "winCondition": "get_all_flags"
+  ]
 }

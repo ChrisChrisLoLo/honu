@@ -12,3 +12,5 @@ def create_game():
                 [Flag(Position(2, 2))])
     display = Display(game, height=800, width=600, sleep_time=0.2)
     return game
+
+# def load_test():
