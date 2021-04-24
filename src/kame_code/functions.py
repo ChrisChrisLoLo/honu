@@ -10,5 +10,5 @@ def create_game():
                  [Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY]],
                 Player(Direction.EAST, Position(0, 0)),
                 [Flag(Position(2, 2))])
-    display = Display(game)
+    display = Display(game, height=800, width=600, sleep_time=0.2)
     return game

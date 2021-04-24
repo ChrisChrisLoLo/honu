@@ -1,4 +1,4 @@
-from graphics import Circle, GraphWin, Rectangle, Point, Text
+from graphics import Circle, GraphWin, Rectangle, Point, Text # type: ignore
 from kame_code.game import Tile
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
@@ -78,7 +78,7 @@ class FlagGraphic():
 
 
 class Display():
-    def __init__(self, game: 'Game', width=800, height=600, sleep_time=0.2) -> None:
+    def __init__(self, game: 'Game', width, height, sleep_time) -> None:
         game._add_observer(self)
         self.game = game
         self.width = width
@@ -184,3 +184,9 @@ class Display():
         Pause for a given amount of time.
         """
         sleep(self.sleep_time)
+
+    def prompt_close(self):
+        message = Text(Point(win.getWidth()/2, 20), 'Click anywhere to quit.')
+        message.draw(win)
+        self.win.getMouse()
+        self.win.close()

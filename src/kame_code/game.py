@@ -19,8 +19,8 @@ direction_array = [Direction.NORTH, Direction.EAST,
 
 
 class WinCondition(Enum):
-    GET_ALL_FLAGS = 'get all flags'
-    CALC_OUTPUT = 'calculate output'
+    GET_ALL_FLAGS = 'get_all_flags'
+    CALC_OUTPUT = 'calculate_output'
     MODIFY_BOARD = 'modify_board'
 
 
@@ -36,6 +36,7 @@ class Tile(Enum):
     GREEN = 'green'
     BLUE = 'blue'
     PURPLE = 'purple'
+    BROWN = 'brown'
 
 
 class Position():
@@ -63,6 +64,8 @@ class Game():
         self.player = player
         self.flags = flags
         self._observers: List['Display'] = []
+        # Used by the user to output values
+        self.output = None
 
     def debug_print(self):
         for row in self.level:
@@ -131,17 +134,3 @@ class Game():
             return True
         else:
             return False
-
-
-class TestCase():
-    def __init__(self, name: str, desc: str, game: Game, expectedLevel, expectedOutput):
-        self.name = name
-        self.desc = desc
-        self.game = game
-        self.expectedLevel = expectedLevel
-        self.expectedOutput = expectedOutput
-
-
-# class Kame:
-#     @staticmethod
-#     generate_game():
