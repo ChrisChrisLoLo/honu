@@ -3,7 +3,7 @@ from enum import Enum
 from time import sleep
 
 if TYPE_CHECKING:
-    from kame_code.display import Display
+    from honu.display import Display
 
 
 class Direction(Enum):
@@ -84,9 +84,6 @@ class Game():
 
     def _add_observer(self, observer: 'Display') -> None:
         self._observers.append(observer)
-
-    def set_speed(self, speed: float):
-        self.speed = speed
 
     def update_display(self) -> None:
         for observer in self._observers:

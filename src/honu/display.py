@@ -1,11 +1,11 @@
 from graphics import Circle, GraphWin, Rectangle, Point, Text # type: ignore
-from kame_code.game import Tile
+from honu.game import Tile
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
 
 if TYPE_CHECKING:
-    from kame_code.game import Game
+    from honu.game import Game
 
 # Size of the sprites used in pixels
 SPRITE_IMAGE_PX = 1

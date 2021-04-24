@@ -1,7 +1,10 @@
 from abc import abstractmethod, ABCMeta
 from typing import Any, List
-from kame_code.game import Game, Tile
+from honu.game import Game, Tile
 
+
+# class TestSuite():
+#     screen
 
 class ITestCase(metaclass=ABCMeta):
     @abstractmethod

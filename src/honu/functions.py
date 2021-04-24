@@ -1,5 +1,5 @@
-from kame_code.game import Game, Tile, Player, Position, Direction, Flag
-from kame_code.display import Display
+from honu.game import Game, Tile, Player, Position, Direction, Flag
+from honu.display import Display
 
 
 def create_game():
@@ -8,7 +8,7 @@ def create_game():
                  [Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY],
                  [Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY],
                  [Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY, Tile.EMPTY]],
-                Player(Direction.EAST, Position(0, 0)),
+                Player(Direction.SOUTH, Position(0, 0)),
                 [Flag(Position(2, 2))])
     display = Display(game, height=800, width=600, sleep_time=0.2)
     return game
