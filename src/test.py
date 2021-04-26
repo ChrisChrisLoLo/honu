@@ -15,14 +15,15 @@ from honu.honu import Honu
 
 # k.debug_print()
 
-k = Honu.create_game()
-k.write_below(Tile.RED)
-k.right()
-k.right()
-k.write_below(Tile.YELLOW)
-k.down()
-k.down()
-k.debug_print()
+honu = Honu(enable_display=True,game_width=15,game_height=15)
+h = honu.create_game()
+h.write_below(Tile.RED)
+h.right()
+h.right()
+h.write_below(Tile.YELLOW)
+h.down()
+h.down()
+h.debug_print()
 
 # k2 = create_game()
 # k2.write_below(Tile.RED)
