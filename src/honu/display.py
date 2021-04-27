@@ -190,3 +190,6 @@ class Display():
         message.draw(win)
         self.win.getMouse()
         self.win.close()
+    
+    def close(self):
+        self.win.close()

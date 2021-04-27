@@ -1,45 +1,47 @@
 from abc import abstractmethod, ABCMeta
-from typing import Any, List
+from typing import Any, Callable, List
 from honu.game import Game, Tile
 
 
 # class TestSuite():
 #     screen
 
+class BaseTest():
+    def __init__(self, name: str, game: Game):
+        self.name = name
+        self.game = game
+
+
 class ITestCase(metaclass=ABCMeta):
+    def __init__(self, base_test: BaseTest):
+        self.base_test = base_test
+
     @abstractmethod
     def is_passing(self):
         pass
 
 
-class TestCase():
-    def __init__(self, name: str, desc: str, game: Game):
-        self.name = name
-        self.desc = desc
-        self.game = game
-
-
 class LevelTestCase(ITestCase):
-    def __init__(self, test_case: TestCase, expected_level: List[List[Tile]]):
-        self.test_case = test_case
+    def __init__(self, base_test: BaseTest, expected_level: List[List[Tile]]):
+        self.base_test = base_test
         self.expected_level = expected_level
 
     def is_passing(self):
-        return self.test_case.game.level == expected_level
+        return self.base_test.game.level == expected_level
 
 
 class OutputTestCase(ITestCase):
-    def __init__(self, test_case: TestCase, expected_output: Any):
-        self.test_case = test_case
+    def __init__(self, base_test: BaseTest, expected_output: Any):
+        self.base_test = base_test
         self.expected_output = expected_output
 
     def is_passing(self):
-        return self.test_case.game.output == expected_output
+        return self.base_test.game.output == expected_output
 
 
 class FlagTestCase(ITestCase):
-    def __init__(self, test_case: TestCase):
-        self.test_case = test_case
+    def __init__(self, base_test: BaseTest):
+        self.base_test = base_test
 
     def is_passing(self):
-        return len(self.test_case.game.flags) == 0
+        return len(self.base_test.game.flags) == 0
