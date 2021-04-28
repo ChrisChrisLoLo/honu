@@ -15,7 +15,7 @@ from honu.honu import HonuTest
 
 # k.debug_print()
 
-honu_test = HonuTest('/home/chriz/Documents/kameCodePython/scrap/level.json',enable_display=True)
+honu_test = HonuTest('/home/chriz/Documents/kameCodePython/scrap/level.json', enable_display=True)
 
 @honu_test.run_test
 def run_code(h):
