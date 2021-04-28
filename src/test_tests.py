@@ -1,4 +1,3 @@
-from honu.game import Game, Tile, Player, Position, Direction, Flag
 from honu.honu import HonuTest
 # k = Game([[Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
 #           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],

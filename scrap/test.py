@@ -1,23 +1,38 @@
-import unittest
+from honu.honu import HonuTest
+from honu.game import Tile
 
-class TestStringMethods(unittest.TestCase):
+# k = Game([[Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
+#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
+#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
+#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
+#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY]],
+#           Player(Direction.EAST,Position(0,0)),
+#           [Flag(Position(2,2))])
 
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+# k.down()
+# k.down()
+# k.right()
+# k.write_below(Tile.PURPLE)
 
-    def test_same(self):
-        self.assertEqual([['f','f','f'],['f','f','f']], [['f','f','f'],['f','q','f']])
+# k.debug_print()
 
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
+honu_test = HonuTest('/home/chriz/Documents/kameCodePython/scrap/level.json', enable_display=True)
 
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
+@honu_test.run_test
+def run_code(h):
+  h.write_below(Tile.RED)
+  h.right()
+  h.right()
+  h.write_below(Tile.YELLOW)
+  h.down()
+  h.down()
+  h.debug_print()
 
-if __name__ == '__main__':
-    unittest.main()
+# k2 = create_game()
+# k2.write_below(Tile.RED)
+# k2.right()
+# k2.right()
+# k2.write_below(Tile.YELLOW)
+# k2.down()
+# k2.down()
+# k2.debug_print()
