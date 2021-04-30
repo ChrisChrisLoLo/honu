@@ -1,7 +1,7 @@
 from typing import Callable, List
 import json
 
-from honu.game import Game, Tile, Player, Position, Direction, Flag, WinCondition
+from honu.game import Game, Tile, Player, Direction, Flag, WinCondition
 from honu.testcases import ITestCase, BaseTest, FlagTestCase, OutputTestCase, LevelTestCase
 from honu.display import Display
 

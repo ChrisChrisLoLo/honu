@@ -1,5 +1,5 @@
 from graphics import Circle, GraphWin, Rectangle, Point, Text # type: ignore
-from honu.game import Tile
+from honu.game import Tile , X , Y
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
@@ -44,15 +44,15 @@ class TurtleGraphic():
         self.circle.setOutline('lime')
         self.circle.draw(self.win)
 
-    def move_to_tile(self, new_i, new_j):
-        x = (new_i-self.i)*self.tile_size_px
-        y = (new_j-self.j)*self.tile_size_px
+    def move_to_tile(self, pos: Tuple[int,int]):
+        x = (pos[0]-self.i)*self.tile_size_px
+        y = (pos[1]-self.j)*self.tile_size_px
         # NOTE: May introduce rounding errors
         dx = x/TURTLE_MOVEMENT_FRAMES
         dy = y/TURTLE_MOVEMENT_FRAMES
         self._move_on_line(dx, dy)
-        self.i = new_i
-        self.j = new_j
+        self.i = pos[0]
+        self.j = pos[1]
 
     def _move_on_line(self, dx, dy):
         for i in range(TURTLE_MOVEMENT_FRAMES):
@@ -126,8 +126,7 @@ class Display():
     def map_flags_to_graphics(self) -> List[FlagGraphic]:
         flag_graphics: List[FlagGraphic] = []
         for flag in self.game.flags:
-            i = flag.pos.x
-            j = flag.pos.y
+            i, j = flag.pos
             flag_x = (i+0.5) * \
                 self.tile_size_px+self.level_offset_x
             flag_y = (j+0.5) * \
@@ -137,8 +136,7 @@ class Display():
         return flag_graphics
 
     def map_turtle_to_graphics(self) -> TurtleGraphic:
-        i = self.game.player.pos.x
-        j = self.game.player.pos.y
+        i, j = self.game.player.pos
         turtle_x = (i+0.5) * \
             self.tile_size_px+self.level_offset_x
         turtle_y = (j+0.5) * \
@@ -163,11 +161,11 @@ class Display():
                     tile.set_fill(observable_game.level[i][j].value)
 
         flag_coords = {
-            f'{flag.pos.x},{flag.pos.y}' for flag in observable_game.flags}
+            f'{flag.pos}' for flag in observable_game.flags}
 
         remove_list: List[FlagGraphic] = []
         for flag_graphic in self.flag_graphics:
-            if f'{flag_graphic.i},{flag_graphic.j}' not in flag_coords:
+            if f'{(flag_graphic.i, flag_graphic.j)}' not in flag_coords:
                 flag_graphic.undraw()
                 remove_list.append(flag_graphic)
 
@@ -175,7 +173,7 @@ class Display():
             self.flag_graphics.remove(flag_graphic)
 
         self.turtle_graphics.move_to_tile(
-            observable_game.player.pos.x, observable_game.player.pos.y)
+            observable_game.player.pos)
 
         self.pause()
 

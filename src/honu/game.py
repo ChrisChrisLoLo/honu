@@ -5,6 +5,9 @@ from time import sleep
 if TYPE_CHECKING:
     from honu.display import Display
 
+# Used for postions
+X = 0
+Y = 1
 
 class Direction(Enum):
     NORTH = "N"
@@ -38,21 +41,14 @@ class Tile(Enum):
     PURPLE = 'purple'
     BROWN = 'brown'
 
-
-class Position():
-    def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
-
-
 class Player():
-    def __init__(self, dir: Direction, pos: Position):
+    def __init__(self, dir: Direction, pos: Tuple[int,int]):
         self.dir = dir
         self.pos = pos
 
 
 class Flag():
-    def __init__(self, pos: Position):
+    def __init__(self, pos: Tuple[int,int]):
         self.pos = pos
 
 
@@ -63,6 +59,8 @@ class Game():
         self.height = len(level[0]) if len(level) > 0 else 0
         self.player = player
         self.flags = flags
+        # Clear flags if present
+        self.__remove_flags_if_below()
         self._observers: List['Display'] = []
         # Used by the user to output values
         self.output = None
@@ -75,11 +73,11 @@ class Game():
             print(tile_string)
         print(f'player: {self.player.pos.x},{self.player.pos.y}')
         print(
-            f'flags: {", ".join([",".join([str(flag.pos.x), str(flag.pos.y)]) for flag in self.flags])}')
+            f'flags: {", ".join([",".join([str(flag.pos[X]), str(flag.pos[Y])]) for flag in self.flags])}')
 
     def __remove_flags_if_below(self) -> None:
         for flag in self.flags:
-            if flag.pos.x == self.player.pos.x and flag.pos.y == self.player.pos.y:
+            if flag.pos[X] == self.player.pos[X] and flag.pos[Y] == self.player.pos[Y]:
                 self.flags.remove(flag)
 
     def _add_observer(self, observer: 'Display') -> None:
@@ -90,18 +88,19 @@ class Game():
             observer.update(self)
 
     def write_below(self, tile: Tile) -> None:
-        self.level[self.player.pos.y][self.player.pos.x] = tile
+        self.level[self.player.pos[Y]][self.player.pos[X]] = tile
         self.update_display()
 
     def read_below(self) -> Tile:
-        return self.level[self.player.pos.y][self.player.pos.x]
+        return self.level[self.player.pos[Y]][self.player.pos[X]]
     
-    def get_pos(self) -> Tuple[int]:
-        return (self.player.pos.x, self.player.pos.y)
+    def get_pos(self) -> Tuple[int, int]:
+        return self.player.pos
 
     def up(self) -> bool:
-        if self.player.pos.y > 0:
-            self.player.pos.y -= 1
+        if self.player.pos[Y] > 0:
+            old_pos = self.player.pos
+            self.player.pos = (old_pos[X], old_pos[Y]-1)
             self.__remove_flags_if_below()
             self.update_display()
             return True
@@ -109,8 +108,9 @@ class Game():
             return False
 
     def down(self) -> bool:
-        if self.player.pos.y < self.height-1:
-            self.player.pos.y += 1
+        if self.player.pos[Y] < self.height-1:
+            old_pos = self.player.pos
+            self.player.pos = (old_pos[X], old_pos[Y]+1)
             self.__remove_flags_if_below()
             self.update_display()
             return True
@@ -118,8 +118,9 @@ class Game():
             return False
 
     def left(self) -> bool:
-        if self.player.pos.x > 0:
-            self.player.pos.x -= 1
+        if self.player.pos[X] > 0:
+            old_pos = self.player.pos
+            self.player.pos = (old_pos[X]-1, old_pos[Y])
             self.__remove_flags_if_below()
             self.update_display()
             return True
@@ -127,8 +128,9 @@ class Game():
             return False
 
     def right(self) -> bool:
-        if self.player.pos.x < self.width-1:
-            self.player.pos.x += 1
+        if self.player.pos[X] < self.width-1:
+            old_pos = self.player.pos
+            self.player.pos = (old_pos[X]+1, old_pos[Y])
             self.__remove_flags_if_below()
             self.update_display()
             return True
