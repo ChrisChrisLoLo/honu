@@ -97,7 +97,7 @@ class HonuTest():
 
         return Game(level, player, flags)
 
-    def run_test(self, code: Callable):
+    def test(self, code: Callable):
         # Load json
         test_cases: List[ITestCase] = self.load_tests_from_json()
         

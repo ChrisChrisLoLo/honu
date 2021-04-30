@@ -1,4 +1,4 @@
-from typing import List, TYPE_CHECKING
+from typing import List, Tuple, TYPE_CHECKING
 from enum import Enum
 from time import sleep
 
@@ -95,6 +95,9 @@ class Game():
 
     def read_below(self) -> Tile:
         return self.level[self.player.pos.y][self.player.pos.x]
+    
+    def get_pos(self) -> Tuple[int]:
+        return (self.player.pos.x, self.player.pos.y)
 
     def up(self) -> bool:
         if self.player.pos.y > 0:
@@ -106,7 +109,7 @@ class Game():
             return False
 
     def down(self) -> bool:
-        if self.player.pos.y < self.height:
+        if self.player.pos.y < self.height-1:
             self.player.pos.y += 1
             self.__remove_flags_if_below()
             self.update_display()
@@ -124,7 +127,7 @@ class Game():
             return False
 
     def right(self) -> bool:
-        if self.player.pos.x < self.width:
+        if self.player.pos.x < self.width-1:
             self.player.pos.x += 1
             self.__remove_flags_if_below()
             self.update_display()

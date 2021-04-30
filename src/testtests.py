@@ -14,9 +14,9 @@ from honu.honu import HonuTest
 
 # k.debug_print()
 
-honu_test = HonuTest('/home/chriz/Documents/kameCodePython/scrap/level.json', enable_display=True)
+ht = HonuTest('/home/chriz/Documents/kameCodePython/scrap/level.json', enable_display=True)
 
-@honu_test.run_test
+@ht.test
 def run_code(h):
   h.write_below(Tile.RED)
   h.right()
