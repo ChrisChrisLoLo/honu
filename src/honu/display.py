@@ -1,5 +1,5 @@
-from graphics import Circle, GraphWin, Rectangle, Point, Text # type: ignore
-from honu.game import Tile , X , Y
+from graphics import Circle, GraphWin, Rectangle, Point, Text  # type: ignore
+from honu.game import Tile, X, Y
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
@@ -44,7 +44,7 @@ class TurtleGraphic():
         self.circle.setOutline('lime')
         self.circle.draw(self.win)
 
-    def move_to_tile(self, pos: Tuple[int,int]):
+    def move_to_tile(self, pos: Tuple[int, int]):
         x = (pos[0]-self.i)*self.tile_size_px
         y = (pos[1]-self.j)*self.tile_size_px
         # NOTE: May introduce rounding errors
@@ -80,15 +80,14 @@ class FlagGraphic():
 class Display():
     def __init__(self, game: 'Game', width, height, sleep_time) -> None:
         game._add_observer(self)
-        self.game = game
         self.width = width
         self.height = height
         self.sleep_time = sleep_time
 
-        self.level_height = len(self.game.level)
+        self.level_height = len(game.level)
         if self.level_height == 0:
             raise Exception('The level cannot be empty!')
-        self.level_width = len(self.game.level[0])
+        self.level_width = len(game.level[0])
 
         self.tile_scale = self.calc_tile_scale()
         self.tile_size_px = self.tile_scale * SPRITE_IMAGE_PX
@@ -97,18 +96,18 @@ class Display():
 
         self.win = GraphWin('Kame Code', width, height)
 
-        self.tile_graphics = self.map_tiles_to_graphics()
-        self.flag_graphics = self.map_flags_to_graphics()
-        self.turtle_graphics = self.map_turtle_to_graphics()
+        self.tile_graphics = self.map_tiles_to_graphics(game)
+        self.flag_graphics = self.map_flags_to_graphics(game)
+        self.turtle_graphics = self.map_turtle_to_graphics(game)
 
     def calc_level_offset(self) -> Tuple[int, int]:
         y_offset = (self.height-self.level_height*self.tile_size_px)/2
         x_offset = (self.width-self.level_width*self.tile_size_px)/2
         return x_offset, y_offset
 
-    def map_tiles_to_graphics(self) -> List[List[Rectangle]]:
+    def map_tiles_to_graphics(self, game: "Game") -> List[List[Rectangle]]:
         mapped_graphics: List[List[Rectangle]] = []
-        for i, row in enumerate(self.game.level):
+        for i, row in enumerate(game.level):
             mapped_row: List[Rectangle] = []
             for j, tile in enumerate(row):
                 start_x = j*self.tile_size_px+self.level_offset_x
@@ -123,9 +122,9 @@ class Display():
             mapped_graphics.append(mapped_row)
         return mapped_graphics
 
-    def map_flags_to_graphics(self) -> List[FlagGraphic]:
+    def map_flags_to_graphics(self, game: "Game") -> List[FlagGraphic]:
         flag_graphics: List[FlagGraphic] = []
-        for flag in self.game.flags:
+        for flag in game.flags:
             i, j = flag.pos
             flag_x = (i+0.5) * \
                 self.tile_size_px+self.level_offset_x
@@ -135,8 +134,8 @@ class Display():
                 self.win, flag_x, flag_y, i, j, self.tile_size_px))
         return flag_graphics
 
-    def map_turtle_to_graphics(self) -> TurtleGraphic:
-        i, j = self.game.player.pos
+    def map_turtle_to_graphics(self, game: "Game") -> TurtleGraphic:
+        i, j = game.player.pos
         turtle_x = (i+0.5) * \
             self.tile_size_px+self.level_offset_x
         turtle_y = (j+0.5) * \
@@ -188,6 +187,6 @@ class Display():
         message.draw(win)
         self.win.getMouse()
         self.win.close()
-    
+
     def close(self):
         self.win.close()
