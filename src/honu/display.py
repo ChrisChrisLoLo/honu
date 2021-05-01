@@ -1,5 +1,5 @@
 from graphics import Circle, GraphWin, Rectangle, Point, Text  # type: ignore
-from honu.game import Tile, X, Y
+from honu.game import Tile
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
