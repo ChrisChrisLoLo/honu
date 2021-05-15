@@ -37,7 +37,7 @@ class Honu():
     def create_game(self):
         # Load game
         game = Game(self.game_tiles,
-                    Player(self.player_start_dir, Position(
+                    Player(self.player_start_dir, (
                         self.player_start_i, self.player_start_j)),
                     self.flags)
         # Run Code
@@ -86,12 +86,12 @@ class HonuTest():
     def create_game_from_level_data(self, level_data):
 
         player_data = level_data['player']
-        player = Player(Direction(player_data['dir']), Position(player_data['pos']['x'], player_data['pos']['y']))
+        player = Player(Direction(player_data['dir']), (player_data['pos']['x'], player_data['pos']['y']))
 
         flags: List[Flag] = []
         for flag_data in level_data['flags']:
             flags.append(
-                Flag(Position(flag_data['pos']['x'], flag_data['pos']['y'])))
+                Flag((flag_data['pos']['x'], flag_data['pos']['y'])))
 
         level = [[Tile(tile_string) for tile_string in string_arr] for string_arr in level_data['level']]
 

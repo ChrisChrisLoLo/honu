@@ -183,8 +183,8 @@ class Display():
         sleep(self.sleep_time)
 
     def prompt_close(self):
-        message = Text(Point(win.getWidth()/2, 20), 'Click anywhere to quit.')
-        message.draw(win)
+        message = Text(Point(self.win.getWidth()/2, 20), 'Click anywhere to quit.')
+        message.draw(self.win)
         self.win.getMouse()
         self.win.close()
 

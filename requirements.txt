@@ -9,7 +9,7 @@ contextlib2==0.6.0
 distlib==0.3.0
 distro==1.4.0
 graphics.py==5.0.1.post1
--e git+https://github.com/ChrisChrisLoLo/kameCode.git@32c2dde55bb85193aaf5bc3926ad56f0dab18712#egg=Honu
+-e git+https://github.com/ChrisChrisLoLo/kameCode.git@615df166774b48569007d45f9c0d934696966e62#egg=Honu
 html5lib==1.0.1
 idna==2.8
 iniconfig==1.1.1
