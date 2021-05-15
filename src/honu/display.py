@@ -1,5 +1,6 @@
-from graphics import Circle, GraphWin, Rectangle, Point, Text  # type: ignore
+from honu.graphics import Circle, GraphWin, Rectangle, Point, Text, Image  # type: ignore
 from honu.game import Tile
+from honu.sprites import FLAG, TURTLE, SPRITE_IMAGE_PX
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
@@ -7,15 +8,13 @@ from time import sleep
 if TYPE_CHECKING:
     from honu.game import Game
 
-# Size of the sprites used in pixels
-SPRITE_IMAGE_PX = 1
-
-# Scale of the turtle relative to the tiles
-TURTLE_SCALE = 0.8
+# Scale of the turtle compared to the sprites original size
+TURTLE_SCALE = 6
 TURTLE_MOVEMENT_FRAMES = 20
 TURTLE_MOVEMENT_SLEEP = 0.01
 
-FLAG_SCALE = 0.4
+# Scale of the flag compared to the sprites original size
+FLAG_SCALE = 6
 
 
 class TileGraphic():
@@ -37,12 +36,10 @@ class TurtleGraphic():
         self.i = i
         self.j = j
         self.tile_size_px = tile_size_px
-        self.circle = Circle(Point(center_x, center_y),
-                             (tile_size_px*TURTLE_SCALE)/2)
-        self.circle.setFill('green')
-        self.circle.setWidth(3)
-        self.circle.setOutline('lime')
-        self.circle.draw(self.win)
+
+        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,TURTLE,TURTLE_SCALE)
+
+        self.image.draw(self.win)
 
     def move_to_tile(self, pos: Tuple[int, int]):
         x = (pos[0]-self.i)*self.tile_size_px
@@ -56,7 +53,7 @@ class TurtleGraphic():
 
     def _move_on_line(self, dx, dy):
         for i in range(TURTLE_MOVEMENT_FRAMES):
-            self.circle.move(dx, dy)
+            self.image.move(dx, dy)
             sleep(TURTLE_MOVEMENT_SLEEP)
 
 
@@ -66,15 +63,11 @@ class FlagGraphic():
         self.i = i
         self.j = j
         self.tile_size_px = tile_size_px
-        self.circle = Circle(Point(center_x, center_y),
-                             (tile_size_px*FLAG_SCALE)/2)
-        self.circle.setFill('red')
-        self.circle.setWidth(3)
-        self.circle.setOutline('black')
-        self.circle.draw(self.win)
+        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,FLAG,FLAG_SCALE)
+        self.image.draw(self.win)
 
     def undraw(self) -> None:
-        self.circle.undraw()
+        self.image.undraw()
 
 
 class Display():
@@ -105,10 +98,10 @@ class Display():
         x_offset = (self.width-self.level_width*self.tile_size_px)/2
         return x_offset, y_offset
 
-    def map_tiles_to_graphics(self, game: "Game") -> List[List[Rectangle]]:
-        mapped_graphics: List[List[Rectangle]] = []
+    def map_tiles_to_graphics(self, game: "Game") -> List[List[TileGraphic]]:
+        mapped_graphics: List[List[TileGraphic]] = []
         for i, row in enumerate(game.level):
-            mapped_row: List[Rectangle] = []
+            mapped_row: List[TileGraphic] = []
             for j, tile in enumerate(row):
                 start_x = j*self.tile_size_px+self.level_offset_x
                 start_y = i*self.tile_size_px+self.level_offset_y
