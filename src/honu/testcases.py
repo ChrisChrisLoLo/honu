@@ -27,7 +27,7 @@ class LevelTestCase(ITestCase):
         self.expected_level = expected_level
 
     def is_passing(self):
-        return self.base_test.game.level == expected_level
+        return self.base_test.game.level == self.expected_level
 
 
 class OutputTestCase(ITestCase):
@@ -36,7 +36,7 @@ class OutputTestCase(ITestCase):
         self.expected_output = expected_output
 
     def is_passing(self):
-        return self.base_test.game.output == expected_output
+        return self.base_test.game.output == self.expected_output
 
 
 class FlagTestCase(ITestCase):
