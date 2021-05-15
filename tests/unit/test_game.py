@@ -1,4 +1,3 @@
-from honu import game
 from honu.game import Direction, WinCondition, Tile, Player, Flag, Game
 
 
@@ -102,6 +101,25 @@ def test_right():
     assert(res == False)
 
     assert(h.get_pos() == (1, 0))
+
+
+def test_empty_tile():
+    level = [[Tile.GREY, Tile.EMPTY, Tile.GREY, Tile.GREY]]
+    h = Game(level, Player(Direction.EAST, (3, 0)), [])
+
+    assert(h.get_pos() == (3, 0))
+
+    res = h.left()
+
+    assert(res == True)
+
+    assert(h.get_pos() == (2, 0))
+
+    res = h.left()
+
+    assert(res == False)
+
+    assert(h.get_pos() == (2, 0))
 
 
 def test_flag_removal():

@@ -56,8 +56,8 @@ class Flag():
 class Game():
     def __init__(self, level: List[List[Tile]], player: Player, flags: List[Flag]):
         self.level = level
-        self.width = len(level)
-        self.height = len(level[0]) if len(level) > 0 else 0
+        self.width = len(level[0]) if len(level) > 0 else 0
+        self.height = len(level)
         self.player = player
         self.flags = flags
         # Clear flags if present
@@ -102,9 +102,9 @@ class Game():
         new_pos: Tuple[int, int] = (
             self.player.pos[X]+translation[X], self.player.pos[Y]+translation[Y])
 
-        is_out_of_bounds = not 0 <= new_pos[X] <= self.width - \
-            1 or not 0 <= new_pos[Y] <= self.height-1
-        if is_out_of_bounds:
+        is_out_of_x = not 0 <= new_pos[X] <= self.width - 1
+        is_out_of_y = not 0 <= new_pos[Y] <= self.height - 1
+        if is_out_of_x or is_out_of_y:
             return False
         
         is_on_empty_tile = self.level[new_pos[Y]][new_pos[X]] == Tile.EMPTY
