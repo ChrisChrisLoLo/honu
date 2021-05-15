@@ -71,7 +71,7 @@ class Game():
             for tile in row:
                 tile_string.append(tile.value)
             print(tile_string)
-        print(f'player: {self.player.pos.x},{self.player.pos.y}')
+        print(f'player: {self.player.pos[X]},{self.player.pos[Y]}')
         print(
             f'flags: {", ".join([",".join([str(flag.pos[X]), str(flag.pos[Y])]) for flag in self.flags])}')
 

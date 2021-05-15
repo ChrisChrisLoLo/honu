@@ -1,5 +1,4 @@
-from honu.graphics import Circle, GraphWin, Rectangle, Point, Text, Image  # type: ignore
-from honu.game import Tile
+from honu.graphics import GraphWin, Rectangle, Point, Text, Image  # type: ignore
 from honu.sprites import FLAG, TURTLE, SPRITE_IMAGE_PX
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
@@ -8,13 +7,8 @@ from time import sleep
 if TYPE_CHECKING:
     from honu.game import Game
 
-# Scale of the turtle compared to the sprites original size
-TURTLE_SCALE = 6
 TURTLE_MOVEMENT_FRAMES = 20
 TURTLE_MOVEMENT_SLEEP = 0.01
-
-# Scale of the flag compared to the sprites original size
-FLAG_SCALE = 6
 
 
 class TileGraphic():
@@ -37,7 +31,7 @@ class TurtleGraphic():
         self.j = j
         self.tile_size_px = tile_size_px
 
-        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,TURTLE,TURTLE_SCALE)
+        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,TURTLE,tile_size_px//SPRITE_IMAGE_PX)
 
         self.image.draw(self.win)
 
@@ -63,7 +57,7 @@ class FlagGraphic():
         self.i = i
         self.j = j
         self.tile_size_px = tile_size_px
-        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,FLAG,FLAG_SCALE)
+        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,FLAG,tile_size_px//SPRITE_IMAGE_PX)
         self.image.draw(self.win)
 
     def undraw(self) -> None:
