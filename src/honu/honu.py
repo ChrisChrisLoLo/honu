@@ -26,7 +26,7 @@ class Honu():
         self.screen_width = 600
         self.sleep_time = 0.2
 
-        self.game_tiles = [[Tile.EMPTY for i in range(
+        self.game_tiles = [[Tile.GREY for i in range(
             game_width)] for j in range(game_height)]
         self.flags: List[Flag] = []
 

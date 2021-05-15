@@ -1,3 +1,4 @@
+from honu.game import Tile
 from honu.graphics import GraphWin, Rectangle, Point, Text, Image  # type: ignore
 from honu.sprites import FLAG, TURTLE, SPRITE_IMAGE_PX
 from math import floor
@@ -16,7 +17,11 @@ class TileGraphic():
         self.fill = fill
         self.win = win
         self.rect = Rectangle(Point(start_x, start_y), Point(end_x, end_y))
-        self.rect.setFill(fill)
+        if fill == Tile.EMPTY.value:
+            # Don't draw tile
+            self.rect.setOutline('')
+        else:
+            self.rect.setFill(fill)
         self.rect.draw(self.win)
 
     def set_fill(self, fill):

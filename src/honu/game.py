@@ -1,6 +1,5 @@
 from typing import List, Tuple, TYPE_CHECKING
 from enum import Enum
-from time import sleep
 
 if TYPE_CHECKING:
     from honu.display import Display
@@ -8,6 +7,7 @@ if TYPE_CHECKING:
 # Used for postions
 X = 0
 Y = 1
+
 
 class Direction(Enum):
     NORTH = "N"
@@ -28,7 +28,7 @@ class WinCondition(Enum):
 
 
 class Tile(Enum):
-    EMPTY = 'grey'
+    EMPTY = 'empty'
 
     WHITE = 'white'
     BLACK = 'black'
@@ -41,14 +41,15 @@ class Tile(Enum):
     PURPLE = 'purple'
     BROWN = 'brown'
 
+
 class Player():
-    def __init__(self, dir: Direction, pos: Tuple[int,int]):
+    def __init__(self, dir: Direction, pos: Tuple[int, int]):
         self.dir = dir
         self.pos = pos
 
 
 class Flag():
-    def __init__(self, pos: Tuple[int,int]):
+    def __init__(self, pos: Tuple[int, int]):
         self.pos = pos
 
 
@@ -93,46 +94,36 @@ class Game():
 
     def read_below(self) -> Tile:
         return self.level[self.player.pos[Y]][self.player.pos[X]]
-    
+
     def get_pos(self) -> Tuple[int, int]:
         return self.player.pos
 
-    def up(self) -> bool:
-        if self.player.pos[Y] > 0:
-            old_pos = self.player.pos
-            self.player.pos = (old_pos[X], old_pos[Y]-1)
+    def move(self, translation: Tuple[int, int]) -> bool:
+        new_pos: Tuple[int, int] = (
+            self.player.pos[X]+translation[X], self.player.pos[Y]+translation[Y])
+
+        is_out_of_bounds = not 0 <= new_pos[X] <= self.width - \
+            1 or not 0 <= new_pos[Y] <= self.height-1
+        if is_out_of_bounds:
+            return False
+        
+        is_on_empty_tile = self.level[new_pos[Y]][new_pos[X]] == Tile.EMPTY
+        if is_on_empty_tile:
+            return False
+        else:
+            self.player.pos = new_pos
             self.__remove_flags_if_below()
             self.update_display()
             return True
-        else:
-            return False
+
+    def up(self) -> bool:
+        return self.move((0, -1))
 
     def down(self) -> bool:
-        if self.player.pos[Y] < self.height-1:
-            old_pos = self.player.pos
-            self.player.pos = (old_pos[X], old_pos[Y]+1)
-            self.__remove_flags_if_below()
-            self.update_display()
-            return True
-        else:
-            return False
+        return self.move((0, 1))
 
     def left(self) -> bool:
-        if self.player.pos[X] > 0:
-            old_pos = self.player.pos
-            self.player.pos = (old_pos[X]-1, old_pos[Y])
-            self.__remove_flags_if_below()
-            self.update_display()
-            return True
-        else:
-            return False
+        return self.move((-1, 0))
 
     def right(self) -> bool:
-        if self.player.pos[X] < self.width-1:
-            old_pos = self.player.pos
-            self.player.pos = (old_pos[X]+1, old_pos[Y])
-            self.__remove_flags_if_below()
-            self.update_display()
-            return True
-        else:
-            return False
+        return self.move((1, 0))
