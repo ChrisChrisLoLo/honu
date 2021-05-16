@@ -1,4 +1,4 @@
-from honu.game import Direction, WinCondition, Tile, Player, Flag, Game
+from honu.game import WinCondition, Tile, Player, Flag, Game
 
 
 def test_game_construction():
@@ -7,13 +7,13 @@ def test_game_construction():
           [Tile.PURPLE, Tile.PURPLE, Tile.PURPLE, Tile.PURPLE, Tile.PURPLE],
           [Tile.PURPLE, Tile.PURPLE, Tile.PURPLE, Tile.PURPLE, Tile.PURPLE],
           [Tile.PURPLE, Tile.PURPLE, Tile.PURPLE, Tile.PURPLE, Tile.PURPLE]],
-         Player(Direction.EAST, (0, 0)),
+         Player((0, 0)),
          [Flag((2, 2))])
 
 
 def test_write_below():
     level = [[Tile.RED, Tile.RED], [Tile.RED, Tile.RED]]
-    h = Game(level, Player(Direction.EAST, (0, 0)), [])
+    h = Game(level, Player((0, 0)), [])
 
     h.write_below(Tile.GREEN)
 
@@ -22,14 +22,14 @@ def test_write_below():
 
 def test_read_below():
     level = [[Tile.EMPTY, Tile.EMPTY], [Tile.EMPTY, Tile.PURPLE]]
-    h = Game(level, Player(Direction.EAST, (1, 1)), [])
+    h = Game(level, Player((1, 1)), [])
 
     assert(h.read_below() == Tile.PURPLE)
 
 
 def test_up():
     level = [[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]]
-    h = Game(level, Player(Direction.EAST, (0, 1)), [])
+    h = Game(level, Player((0, 1)), [])
 
     assert(h.get_pos() == (0, 1))
 
@@ -48,7 +48,7 @@ def test_up():
 
 def test_down():
     level = [[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]]
-    h = Game(level, Player(Direction.EAST, (0, 0)), [])
+    h = Game(level, Player((0, 0)), [])
 
     assert(h.get_pos() == (0, 0))
 
@@ -67,7 +67,7 @@ def test_down():
 
 def test_left():
     level = [[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]]
-    h = Game(level, Player(Direction.EAST, (1, 0)), [])
+    h = Game(level, Player((1, 0)), [])
 
     assert(h.get_pos() == (1, 0))
 
@@ -86,7 +86,7 @@ def test_left():
 
 def test_right():
     level = [[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]]
-    h = Game(level, Player(Direction.EAST, (0, 0)), [])
+    h = Game(level, Player((0, 0)), [])
 
     assert(h.get_pos() == (0, 0))
 
@@ -105,7 +105,7 @@ def test_right():
 
 def test_empty_tile():
     level = [[Tile.GREY, Tile.EMPTY, Tile.GREY, Tile.GREY]]
-    h = Game(level, Player(Direction.EAST, (3, 0)), [])
+    h = Game(level, Player((3, 0)), [])
 
     assert(h.get_pos() == (3, 0))
 
@@ -124,7 +124,7 @@ def test_empty_tile():
 
 def test_flag_removal():
     level = [[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]]
-    h = Game(level, Player(Direction.EAST, (0, 0)),
+    h = Game(level, Player((0, 0)),
              [Flag((0, 0)), Flag((1, 0))])
 
     # flag should be removed as player is already on one
