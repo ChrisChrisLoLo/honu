@@ -1,11 +1,11 @@
-from honu.game import Game, Tile, Player, Direction, Flag
+from honu.game import Game, Tile, Player, Flag
 from honu.honu import Honu
 # k = Game([[Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
 #           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
 #           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
 #           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
 #           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY]],
-#           Player(Direction.EAST,Position(0,0)),
+#           Player((0,0)),
 #           [Flag(Position(2,2))])
 
 # k.down()

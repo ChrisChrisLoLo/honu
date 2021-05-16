@@ -1,7 +1,7 @@
 from typing import Callable, List
 import json
 
-from honu.game import Game, Tile, Player, Direction, Flag, WinCondition
+from honu.game import Game, Tile, Player, Flag, WinCondition
 from honu.testcases import ITestCase, BaseTest, FlagTestCase, OutputTestCase, LevelTestCase
 from honu.display import Display
 
@@ -32,12 +32,11 @@ class Honu():
 
         self.player_start_i = game_width//2
         self.player_start_j = game_width//2
-        self.player_start_dir = Direction.SOUTH
 
     def create_game(self):
         # Load game
         game = Game(self.game_tiles,
-                    Player(self.player_start_dir, (
+                    Player((
                         self.player_start_i, self.player_start_j)),
                     self.flags)
         # Run Code
@@ -86,7 +85,7 @@ class HonuTest():
     def create_game_from_level_data(self, level_data):
 
         player_data = level_data['player']
-        player = Player(Direction(player_data['dir']), (player_data['pos']['x'], player_data['pos']['y']))
+        player = Player((player_data['pos']['x'], player_data['pos']['y']))
 
         flags: List[Flag] = []
         for flag_data in level_data['flags']:

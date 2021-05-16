@@ -9,18 +9,6 @@ X = 0
 Y = 1
 
 
-class Direction(Enum):
-    NORTH = "N"
-    EAST = "E"
-    SOUTH = "S"
-    WEST = "W"
-
-
-# used to calculate rotations
-direction_array = [Direction.NORTH, Direction.EAST,
-                   Direction.SOUTH, Direction.WEST]
-
-
 class WinCondition(Enum):
     GET_ALL_FLAGS = 'get_all_flags'
     CALC_OUTPUT = 'calculate_output'
@@ -43,8 +31,7 @@ class Tile(Enum):
 
 
 class Player():
-    def __init__(self, dir: Direction, pos: Tuple[int, int]):
-        self.dir = dir
+    def __init__(self, pos: Tuple[int, int]):
         self.pos = pos
 
 
