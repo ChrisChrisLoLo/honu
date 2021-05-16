@@ -88,9 +88,9 @@ class Display():
 
         self.win = GraphWin('Kame Code', width, height)
 
-        self.tile_graphics = self.map_tiles_to_graphics(game)
-        self.flag_graphics = self.map_flags_to_graphics(game)
-        self.turtle_graphics = self.map_turtle_to_graphics(game)
+        self.tile_graphics: List[List[TileGraphic]] = self.map_tiles_to_graphics(game)
+        self.flag_graphics: List[FlagGraphic] = self.map_flags_to_graphics(game)
+        self.turtle_graphics: TurtleGraphic = self.map_turtle_to_graphics(game)
 
     def calc_level_offset(self) -> Tuple[int, int]:
         y_offset = (self.height-self.level_height*self.tile_size_px)/2
