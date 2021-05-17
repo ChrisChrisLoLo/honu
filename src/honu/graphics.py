@@ -68,7 +68,6 @@ __version__ = "6.X"
 
 import time
 import os
-import sys
 
 import tkinter as tk
 from typing import Any, Dict

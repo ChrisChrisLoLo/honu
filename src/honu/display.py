@@ -31,14 +31,15 @@ class TileGraphic():
 
 
 class TurtleGraphic():
+    sprite = resource_string('honu.static.sprites','turtle.png')
+
     def __init__(self, win, center_x, center_y, i, j, tile_size_px):
         self.win = win
         self.i = i
         self.j = j
         self.tile_size_px = tile_size_px
 
-        turtle_data = resource_string('honu.static.sprites','turtle.png')
-        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,turtle_data,tile_size_px//SPRITE_SIZE_PX)
+        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,TurtleGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
 
         self.image.draw(self.win)
 
@@ -59,14 +60,15 @@ class TurtleGraphic():
 
 
 class FlagGraphic():
+    sprite = resource_string('honu.static.sprites','flag.png')
+
     def __init__(self, win, center_x, center_y, i, j, tile_size_px) -> None:
         self.win = win
         self.i = i
         self.j = j
         self.tile_size_px = tile_size_px
 
-        flag_data = resource_string('honu.static.sprites','flag.png')
-        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,flag_data,tile_size_px//SPRITE_SIZE_PX)
+        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,FlagGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
         self.image.draw(self.win)
 
     def undraw(self) -> None:

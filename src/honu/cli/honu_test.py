@@ -99,7 +99,7 @@ def find_best_honu_test(module) -> HonuTest:
             "Detected multiple honu test instances in module"
         )
     raise Exception(
-        "Could not find a honu test instance in the file"
+        "Could not find a honu test instance in the file! Did you create a HonuTest() instance?"
     )
 
 
