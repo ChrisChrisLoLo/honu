@@ -19,37 +19,26 @@ def honutest():
     print(args.level)
     if args.level.isdigit():
         # do the thing
-        level_path = "/home/chriz/Documents/kameCodePython/src/honu/static/levels/0.json"
+        level_int = int(args.level)
+        level_json_path = get_numbered_level_path(level_int)
     else:
-        level_path = ""
-    
-    import_name = prepare_import(args.code)
+        level_json_path = args.level
+
+    ht: HonuTest = import_honu_test_from_file(args.code)
+
+    ht.run_test(level_json_path)
+
+def get_numbered_level_path(level_num: int) -> str:
+    return ''
+
+def import_honu_test_from_file(path: str) -> HonuTest:
+    import_name = prepare_import(path)
 
     __import__(import_name)
     module = sys.modules[import_name]
-    
-    ht: HonuTest = find_best_honu_test(module)
 
-    ht.path_to_test = level_path
-    ht.run_test()
-    # ht.load_tests_from_json
-    print(dir(module))
+    return find_best_honu_test(module)
 
-
-    # spec = importlib.util.spec_from_file_location("honu_user_code", "/home/chriz/Documents/kameCodePython/src/testtests.py")
-    # # spec = importlib.util.spec_from_file_location("honu_user_code", args.code)
-
-    # module = importlib.util.module_from_spec(spec)
-    # sys.modules["honu_user_code"] = module
-    # # spec.loader.exec_module(module)
-    # print(module.__package__)
-    # print(dir(module))
-    # honu_user_code = __import__('honu_user_code')
-    # print(honu_user_code)
-    # honu_user_code.s
-    # print(module.__dict__.keys())
-    # ht = module.run_code
-    # print(ht)
 
 def prepare_import(path: str) -> str:
     """Given a filename this will try to calculate the python path, add it
@@ -80,6 +69,7 @@ def prepare_import(path: str) -> str:
 
     return ".".join(module_name[::-1])
 
+
 def find_best_honu_test(module) -> HonuTest:
     """Given a module instance this tries to find the best possible
     application in the module or raises an exception.
@@ -105,6 +95,7 @@ def find_best_honu_test(module) -> HonuTest:
     raise Exception(
         "Could not find a honu test instance in the file"
     )
+
 
 if __name__ == '__main__':
     honutest()

@@ -53,15 +53,13 @@ class HonuTest():
         self.screen_width = 600
         self.sleep_time = 0.2
 
-        self.path_to_test = path_to_test
-
-    def load_tests_from_json(self) -> List[ITestCase]:
+    def load_tests_from_json(self, path_to_test:str) -> List[ITestCase]:
         tests: List[ITestCase] = []
 
-        if not self.path_to_test:
+        if not path_to_test:
             raise Exception("Path to a test json is not set!")
 
-        with open(self.path_to_test) as file:
+        with open(path_to_test) as file:
             json_dict = json.load(file)
             title = json_dict['title']
             lib_version = json_dict['libVersion']
@@ -109,9 +107,9 @@ class HonuTest():
         """
         self.code_to_execute = code_to_execute
 
-    def run_test(self):
-        # Load json
-        test_cases: List[ITestCase] = self.load_tests_from_json()
+    def run_test(self, path_to_test:str):
+
+        test_cases: List[ITestCase] = self.load_tests_from_json(path_to_test)
 
         # e.g. ...F..
         test_status: str = ''
