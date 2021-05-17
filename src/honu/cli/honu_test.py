@@ -1,5 +1,5 @@
 import argparse
-import importlib
+import pkg_resources
 import sys
 import os
 from honu import HonuTest
@@ -19,8 +19,7 @@ def honutest():
     print(args.level)
     if args.level.isdigit():
         # do the thing
-        level_int = int(args.level)
-        level_json_path = get_numbered_level_path(level_int)
+        level_json_path = get_numbered_level_path(args.level)
     else:
         level_json_path = args.level
 
@@ -28,8 +27,15 @@ def honutest():
 
     ht.run_test(level_json_path)
 
-def get_numbered_level_path(level_num: int) -> str:
-    return ''
+def get_numbered_level_path(level_num:str):
+    print(__name__)
+
+    if not pkg_resources.resource_exists('honu.static.levels', f'{level_num}.json'):
+        raise Exception(f'Level {level_num} does not exist! Is the honu package up to date?')
+
+    file_name = pkg_resources.resource_filename('honu.static.levels', f'{level_num}.json')
+    print(file_name)
+    return file_name
 
 def import_honu_test_from_file(path: str) -> HonuTest:
     import_name = prepare_import(path)
