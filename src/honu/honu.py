@@ -1,4 +1,4 @@
-from typing import Callable, List
+from typing import Callable, Optional, List
 import json
 
 from honu.game import Game, Tile, Player, Flag, WinCondition
@@ -47,18 +47,21 @@ class Honu():
 
 
 class HonuTest():
-    def __init__(self, path_to_json: str, enable_display: bool = False):
+    def __init__(self, enable_display: bool = False, path_to_test: Optional[str] = None):
         self.enable_display = enable_display
         self.screen_height = 800
         self.screen_width = 600
         self.sleep_time = 0.2
 
-        self.path_to_json = path_to_json
+        self.path_to_test = path_to_test
 
     def load_tests_from_json(self) -> List[ITestCase]:
         tests: List[ITestCase] = []
 
-        with open(self.path_to_json) as file:
+        if not self.path_to_test:
+            raise Exception("Path to a test json is not set!")
+
+        with open(self.path_to_test) as file:
             json_dict = json.load(file)
             title = json_dict['title']
             lib_version = json_dict['libVersion']
@@ -74,11 +77,14 @@ class HonuTest():
             if win_condition == WinCondition.GET_ALL_FLAGS.value:
                 tests.append(FlagTestCase(base_test))
             elif win_condition == WinCondition.CALC_OUTPUT.value:
-                tests.append(OutputTestCase(base_test, level_data['expectedOutput']))
+                tests.append(OutputTestCase(
+                    base_test, level_data['expectedOutput']))
             elif win_condition == WinCondition.MODIFY_BOARD.value:
-                tests.append(LevelTestCase(base_test, level_data['expectedBoard']))
+                tests.append(LevelTestCase(
+                    base_test, level_data['expectedBoard']))
             else:
-                raise ValueError(f'The win condition {win_condition} is not recognizable!')
+                raise ValueError(
+                    f'The win condition {win_condition} is not recognizable!')
 
         return tests
 
@@ -92,14 +98,21 @@ class HonuTest():
             flags.append(
                 Flag((flag_data['pos']['x'], flag_data['pos']['y'])))
 
-        level = [[Tile(tile_string) for tile_string in string_arr] for string_arr in level_data['level']]
+        level = [[Tile(tile_string) for tile_string in string_arr]
+                 for string_arr in level_data['level']]
 
         return Game(level, player, flags)
 
-    def test(self, code: Callable):
+    def code(self, code_to_execute: Callable):
+        """
+        Sets the code to be run for this test 
+        """
+        self.code_to_execute = code_to_execute
+
+    def run_test(self):
         # Load json
         test_cases: List[ITestCase] = self.load_tests_from_json()
-        
+
         # e.g. ...F..
         test_status: str = ''
         failing_tests: List[ITestCase] = []
@@ -109,9 +122,13 @@ class HonuTest():
 
             if self.enable_display:
                 display = Display(game, height=self.screen_height,
-                              width=self.screen_width, sleep_time=self.sleep_time)
+                                  width=self.screen_width, sleep_time=self.sleep_time)
             # TODO: catch exceptions
-            code(game)
+            if not self.code_to_execute:
+                raise Exception('No code has been specified with `@__.code`!')
+
+            self.code_to_execute(game)
+
             if self.enable_display:
                 display.close()
 
@@ -122,5 +139,5 @@ class HonuTest():
             else:
                 print(f'{test_case.base_test.name} ... ok')
                 test_status += '.'
-        
+
         print(test_status)

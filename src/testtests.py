@@ -1,23 +1,9 @@
 from honu.game import Tile
 from honu.honu import HonuTest
-# k = Game([[Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
-#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
-#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
-#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY],
-#           [Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY,Tile.EMPTY]],
-#           Player(Direction.EAST,Position(0,0)),
-#           [Flag(Position(2,2))])
 
-# k.down()
-# k.down()
-# k.right()
-# k.write_below(Tile.PURPLE)
+ht = HonuTest(enable_display=True)
 
-# k.debug_print()
-
-ht = HonuTest('/home/chriz/Documents/kameCodePython/scrap/level.json', enable_display=True)
-
-@ht.test
+@ht.code
 def run_code(h):
   h.write_below(Tile.RED)
   h.right()
