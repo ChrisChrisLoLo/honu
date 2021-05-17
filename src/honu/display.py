@@ -1,9 +1,10 @@
 from honu.game import Tile
 from honu.graphics import GraphWin, Rectangle, Point, Text, Image  # type: ignore
-from honu.sprites import FLAG, TURTLE, SPRITE_IMAGE_PX
+from honu.static.sprites import SPRITE_SIZE_PX
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
+from pkg_resources import resource_string
 
 if TYPE_CHECKING:
     from honu.game import Game
@@ -36,7 +37,8 @@ class TurtleGraphic():
         self.j = j
         self.tile_size_px = tile_size_px
 
-        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,TURTLE,tile_size_px//SPRITE_IMAGE_PX)
+        turtle_data = resource_string('honu.static.sprites','turtle.png')
+        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,turtle_data,tile_size_px//SPRITE_SIZE_PX)
 
         self.image.draw(self.win)
 
@@ -62,7 +64,9 @@ class FlagGraphic():
         self.i = i
         self.j = j
         self.tile_size_px = tile_size_px
-        self.image = Image(Point(center_x,center_y),SPRITE_IMAGE_PX,SPRITE_IMAGE_PX,FLAG,tile_size_px//SPRITE_IMAGE_PX)
+
+        flag_data = resource_string('honu.static.sprites','flag.png')
+        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,flag_data,tile_size_px//SPRITE_SIZE_PX)
         self.image.draw(self.win)
 
     def undraw(self) -> None:
@@ -82,7 +86,7 @@ class Display():
         self.level_width = len(game.level[0])
 
         self.tile_scale = self.calc_tile_scale()
-        self.tile_size_px = self.tile_scale * SPRITE_IMAGE_PX
+        self.tile_size_px = self.tile_scale * SPRITE_SIZE_PX
 
         self.level_offset_x, self.level_offset_y = self.calc_level_offset()
 
@@ -140,7 +144,7 @@ class Display():
         """
         return max(1,
                    floor(min(self.width/self.level_width, self.height /
-                         self.level_height)/SPRITE_IMAGE_PX)
+                         self.level_height)/SPRITE_SIZE_PX)
                    )
 
     def update(self, observable_game: 'Game') -> None:
