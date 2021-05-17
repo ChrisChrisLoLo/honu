@@ -11,6 +11,6 @@ setup(
     },
     package_data={
         # Used to include the default levels
-        "": ["*.json"],
+        "": ["*.json","*.png"],
     }
 )
