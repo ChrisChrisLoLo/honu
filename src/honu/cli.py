@@ -1,29 +1,21 @@
-import argparse
+from click.decorators import command
 import pkg_resources
 import sys
 import os
 from honu import HonuTest
+import click
 
+@click.group()
+def cli():
+  pass
 
-def main():
-    parser = argparse.ArgumentParser(
-        description='Test Honu code for a given level.')
+@cli.command()
+@click.argument('level')
+@click.argument('code_file')
+def test(level, code_file):
+    level_json_path = get_numbered_level_path(level) if level.isdigit() else level
 
-    parser.add_argument('level', metavar='level', type=str,
-                        help='The level to run the code on, either a number or a filename')
-
-    parser.add_argument('code', metavar='code', type=str,
-                        help='The Honu code python file to run')
-
-    args = parser.parse_args()
-    print(args.level)
-    if args.level.isdigit():
-        # do the thing
-        level_json_path = get_numbered_level_path(args.level)
-    else:
-        level_json_path = args.level
-
-    ht: HonuTest = import_honu_test_from_file(args.code)
+    ht: HonuTest = import_honu_test_from_file(code_file)
 
     ht.run_test(level_json_path)
 
@@ -98,7 +90,3 @@ def find_best_honu_test(module) -> HonuTest:
     raise Exception(
         "Could not find a honu test instance in the file! Did you create a HonuTest() instance?"
     )
-
-
-if __name__ == '__main__':
-    main()

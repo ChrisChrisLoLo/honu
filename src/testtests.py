@@ -1,5 +1,4 @@
-from honu.game import Tile
-from honu.honu import HonuTest
+from honu import HonuTest, Tile
 
 ht = HonuTest(enable_display=True)
 
