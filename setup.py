@@ -5,12 +5,15 @@ from setuptools import setup, find_packages
 setup(
     name="Honu",
     install_requires=[
-        "graphics.py>=5.0.1.post1",
+        "click>=8.0.0",
     ],
     extras_require={
     },
     package_data={
         # Used to include the default levels
-        "": ["*.json","*.png"],
-    }
+        "": ["*.json", "*.png"],
+    },
+    # entry_points={
+    #     'console_scripts': ['honutest=honu.cli.honu_test:main'],
+    # }
 )
