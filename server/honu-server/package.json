@@ -19,11 +19,13 @@
     "@chakra-ui/react": "^1.6.2",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@inlet/react-pixi": "^6.5.2",
     "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.5",
     "framer-motion": "^4.1.17",
     "gatsby": "^3.4.1",
     "gatsby-plugin-ts-loader": "^0.1.0",
+    "pixi.js": "^6.0.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
