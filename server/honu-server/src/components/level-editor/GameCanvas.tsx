@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import { Stage, Sprite, Container } from '@inlet/react-pixi';
 import { settings, SCALE_MODES } from 'pixi.js';

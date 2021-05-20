@@ -1,4 +1,4 @@
-import { CloseButton, FormControl, FormHelperText, FormLabel, Input, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
+import { CloseButton, FormControl, FormHelperText, FormLabel, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DirectionType } from '../../types/Directions';
 import { TestCase } from '../../types/TestCase';
@@ -20,12 +20,59 @@ export default function LevelCanvasEditor(props: PropType) {
 
   const [tileToDraw, setTileToDraw] = useState(TileType.GREY)
 
+  function handleDimChange(valString: string, isWidth: boolean) {
+    const newDim = parseInt(valString)
+    const newTestCase = { ...props.testCase }
+    const currWidth = newTestCase.levelData.level[0].length
+    const currHeight = newTestCase.levelData.level.length
+    if (isWidth) {
+      const newWidth = newDim
+      const shouldExpand: boolean = newWidth > currWidth;
+      for (let rowI = 0; rowI < currHeight; rowI++) {
+        for (let i = 0; i < Math.abs(currWidth - newWidth); i++) {
+          const row = newTestCase.levelData.level[rowI]
+          shouldExpand ? row.push(TileType.WHITE) : row.pop()
+        }
+      }
+    } else {
+      const newHeight = newDim
+      const shouldExpand: boolean = newHeight > currHeight;
+      for (let i = 0; i < Math.abs(currHeight - newHeight); i++) {
+        const level = newTestCase.levelData.level
+        shouldExpand ? level.push(Array(currWidth).fill(TileType.WHITE)) : level.pop()
+      }
+    }
+    props.setTestCase(newTestCase)
+  }
+
   function handleTileToDraw(e: any) {
     setTileToDraw(e.target.value)
   }
 
   return (
     <>
+      <HStack>
+        <FormControl>
+          <FormLabel>Level Width</FormLabel>
+          <NumberInput min={1} value={props.testCase.levelData.level[0].length} name="width" onChange={(valueString) => handleDimChange(valueString, true)}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+        <FormControl>
+          <FormLabel>Level Height</FormLabel>
+          <NumberInput min={1} value={props.testCase.levelData.level.length} name="height" onChange={(valueString) => handleDimChange(valueString, false)}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+      </HStack>
       <FormControl>
         <FormLabel>Tile Color</FormLabel>
         <Select value={tileToDraw} onChange={handleTileToDraw}>
