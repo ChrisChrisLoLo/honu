@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Stage, Sprite, Text, Container, render } from '@inlet/react-pixi';
-import { settings, SCALE_MODES, TextStyle } from 'pixi.js';
-import { LevelData } from '../../types/LevelData';
+import { Stage, Sprite, Container } from '@inlet/react-pixi';
+import { settings, SCALE_MODES } from 'pixi.js';
 import { sprites, tileSpriteEnumMap, turtleAngleDirMap } from './assets/sprites';
 import { TileType } from '../../types/TileType';
 import { TestCase } from '../../types/TestCase';
+
+import './GameCanvas.css';
 
 // Disable interpolation when scaling, will make texture be pixelated
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
@@ -14,6 +15,8 @@ interface StateProps {
   selectedTileType: TileType
   testCase: TestCase
   setTestCase: Function
+  // if the canvas is drawing the expected output map
+  isExpectedOutput: boolean
 }
 
 const STAGE_WIDTH: number = 600
@@ -94,13 +97,15 @@ export default function GameCanvas(props: StateProps) {
   />
 
   return (
-    <Stage className={'rounded'} width={STAGE_WIDTH} height={STAGE_HEIGHT} style={{ width: '100%' }} options={{ backgroundColor: 0xeef1f5 }}>
-      <Container position={[CONTAINER_PADDING_X, CONTAINER_PADDING_Y]}>
-        {tileSprites}
-        {flagSprites}
-        {turtleSprite}
-      </Container>
-    </Stage>
+    <div className={'checkerboard'} style={{width: STAGE_WIDTH}}>
+      <Stage className={'rounded'} width={STAGE_WIDTH} height={STAGE_HEIGHT} style={{ width: '100%' }} options={{transparent:true}}>
+        <Container position={[CONTAINER_PADDING_X, CONTAINER_PADDING_Y]}>
+          {tileSprites}
+          {flagSprites}
+          {turtleSprite}
+        </Container>
+      </Stage>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { CloseButton, FormControl, FormLabel, Input, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
+import { CloseButton, FormControl, FormHelperText, FormLabel, Input, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DirectionType } from '../../types/Directions';
 import { MetaGame } from '../../types/MetaGame';
@@ -69,8 +69,9 @@ export default function LevelCreationForm(props: PropType) {
                 <FormLabel>Test Case Description</FormLabel>
                 <Input value={testCase.name} name="name" onChange={(e) => handleTestCaseTitleChange(e, i)} />
               </FormControl>
+              <LevelCanvasEditor testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} isExpectedOutput={false}/>
             </Stack>
-            <LevelCanvasEditor testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} />
+          
           </TabPanel>
         )}
       </TabPanels>

@@ -1,4 +1,4 @@
-import { CloseButton, FormControl, FormLabel, Input, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
+import { CloseButton, FormControl, FormHelperText, FormLabel, Input, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DirectionType } from '../../types/Directions';
 import { TestCase } from '../../types/TestCase';
@@ -12,6 +12,7 @@ interface PropType {
   testCase: TestCase
   winCondition: WinCondType
   setTestCase: Function
+  isExpectedOutput: boolean
 }
 
 export default function LevelCanvasEditor(props: PropType) {
@@ -19,20 +20,25 @@ export default function LevelCanvasEditor(props: PropType) {
 
   const [tileToDraw, setTileToDraw] = useState(TileType.GREY)
 
-  function handleTileToDraw(e: any){
+  function handleTileToDraw(e: any) {
     setTileToDraw(e.target.value)
   }
 
   return (
     <>
-      <Select value={tileToDraw} onChange={handleTileToDraw}>
-        {Object.keys(TileType).map(key =>
-          <option key={key} value={(TileType as any)[key]}>
-            {(TileType as any)[key]}
-          </option>)
-        }
-      </Select>
-      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedTileType={tileToDraw}></GameCanvas>
+      <FormControl>
+        <FormLabel>Tile Color</FormLabel>
+        <Select value={tileToDraw} onChange={handleTileToDraw}>
+          {Object.keys(TileType).map(key =>
+            <option key={key} value={(TileType as any)[key]}>
+              {(TileType as any)[key]}
+            </option>)
+          }
+        </Select>
+        <FormHelperText>Click on the tiles to color them</FormHelperText>
+      </FormControl>
+
+      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedTileType={tileToDraw} isExpectedOutput={props.isExpectedOutput}></GameCanvas>
     </>
   )
 }

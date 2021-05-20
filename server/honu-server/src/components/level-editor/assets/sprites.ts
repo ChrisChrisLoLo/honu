@@ -1,4 +1,4 @@
-import turtle from './turtle.png'
+import turtle from '../../../../../../src/honu/static/sprites/turtle.png'
 import flag from '../../../../../../src/honu/static/sprites/flag.png'
 import tileBlack from '../../../../../../src/honu/static/sprites/tile_black.png'
 import tileBlue from '../../../../../../src/honu/static/sprites/tile_blue.png'
@@ -9,21 +9,23 @@ import tilePurple from '../../../../../../src/honu/static/sprites/tile_purple.pn
 import tileRed from '../../../../../../src/honu/static/sprites/tile_red.png'
 import tileWhite from '../../../../../../src/honu/static/sprites/tile_white.png'
 import tileYellow from '../../../../../../src/honu/static/sprites/tile_yellow.png'
+import tileOrange from '../../../../../../src/honu/static/sprites/tile_orange.png'
 import { TileType } from '../../../types/TileType'
 import { DirectionType } from '../../../types/Directions'
 
 export const sprites = {
-  turtle: turtle,
-  flag: flag,
-  tileBlack: tileBlack,
-  tileBlue: tileBlue,
-  tileEmpty: tileEmpty,
-  tileGreen: tileGreen,
-  tileGrey: tileGrey,
-  tilePurple: tilePurple,
-  tileRed: tileRed,
-  tileWhite: tileWhite,
-  tileYellow: tileYellow
+  turtle,
+  flag,
+  tileBlack,
+  tileBlue,
+  tileEmpty,
+  tileGreen,
+  tileGrey,
+  tilePurple,
+  tileRed,
+  tileWhite,
+  tileYellow,
+  tileOrange
 }
 
 export const tileSpriteEnumMap = new Map<TileType, string>([
@@ -35,7 +37,8 @@ export const tileSpriteEnumMap = new Map<TileType, string>([
   [TileType.PURPLE, tilePurple],
   [TileType.RED, tileRed],
   [TileType.WHITE, tileWhite],
-  [TileType.YELLOW, tileYellow]
+  [TileType.YELLOW, tileYellow],
+  [TileType.ORANGE, tileOrange]
 ])
 
 export const turtleAngleDirMap = new Map<DirectionType, number>([
