@@ -139,7 +139,7 @@ export default function LevelCreationForm() {
         </Box>
 
         <Box>
-          <LevelTabs testCases={metagame.testCases} setTestCases={setTestCases}/>
+          <LevelTabs metagame={metagame} setTestCases={setTestCases}/>
         </Box>
       </Flex>
     </>
