@@ -110,7 +110,7 @@ export default function LevelTab(props: PropType) {
       <HStack>
         <FormControl>
           <FormLabel>Turtle X</FormLabel>
-          <NumberInput min={0} max={width - 1} onChange={(valueString) => handleCoordChange(valueString, true)}>
+          <NumberInput min={0} max={width - 1} value={testCase.levelData.player.pos.x} onChange={(valueString) => handleCoordChange(valueString, true)}>
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -120,7 +120,7 @@ export default function LevelTab(props: PropType) {
         </FormControl>
         <FormControl>
           <FormLabel>Turtle Y</FormLabel>
-          <NumberInput min={0} max={height - 1} onChange={(valueString) => handleCoordChange(valueString, false)}>
+          <NumberInput min={0} max={height - 1} value={testCase.levelData.player.pos.y} onChange={(valueString) => handleCoordChange(valueString, false)}>
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -150,7 +150,10 @@ export default function LevelTab(props: PropType) {
       }
       {
         props.winCondition === WinCondType.MODIFY_BOARD &&
-        <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={true}/>
+        <>
+          <Text>Expected Output</Text>
+          <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={true}/>
+        </>
       }
     </Stack>
   )

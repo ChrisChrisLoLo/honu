@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import { Stage, Sprite, Container } from '@inlet/react-pixi';
 import { settings, SCALE_MODES } from 'pixi.js';
@@ -8,12 +8,13 @@ import { TestCase } from '../../types/TestCase';
 
 import './GameCanvas.css';
 import { LevelData } from '../../types/LevelData';
+import { EntityType } from '../../types/EntityType';
 
 // Disable interpolation when scaling, will make texture be pixelated
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 interface StateProps {
-  selectedTileType: TileType
+  selectedDrawType: TileType | EntityType
   testCase: TestCase
   setTestCase: Function
   isExpectedOutput: boolean
@@ -32,19 +33,42 @@ const CONTAINER_HEIGHT: number = STAGE_HEIGHT - 2 * CONTAINER_PADDING_Y
 
 export default function GameCanvas(props: StateProps) {
 
-  function updateTileType(i: number,j: number){
-    const newTestCase = {...props.testCase}
-    if (props.isExpectedOutput){
-      newTestCase.expectedLevel[i][j] = props.selectedTileType
+  function updateTileType(i: number, j: number) {
+    const newTestCase = { ...props.testCase }
+    if (Object.values(TileType).includes(props.selectedDrawType as TileType)) {
+      const tile = props.selectedDrawType as TileType
+      if (props.isExpectedOutput) {
+        newTestCase.expectedLevel[i][j] = tile
+      } else {
+        newTestCase.levelData.level[i][j] = tile
+      }
+    } else if (Object.values(EntityType).includes(props.selectedDrawType as EntityType)) {
+      const entity = props.selectedDrawType as EntityType
+      if (entity == EntityType.TURTLE) {
+        newTestCase.levelData.player.pos.y = i
+        newTestCase.levelData.player.pos.x = j
+      } else if (entity == EntityType.FLAG) {
+        const existingFlags = newTestCase.levelData.flags.filter(flag => flag.pos.y == i && flag.pos.x == j)
+        if (existingFlags.length > 0) {
+          // remove flag\
+          console.log(existingFlags)
+          newTestCase.levelData.flags = newTestCase.levelData.flags.filter(flag => flag != existingFlags[0])
+        } else {
+          newTestCase.levelData.flags.push({pos:{x:j, y:i}})
+        }
+      } else {
+        throw Error(`${entity} is not a recognizable entity type!`)
+      }
     } else {
-      newTestCase.levelData.level[i][j] = props.selectedTileType
+      throw Error(`${props.selectedDrawType} is not a recognizable tile or entity type!`)
     }
+
     props.setTestCase(newTestCase)
   }
 
   let gameDisplay: LevelData = props.testCase.levelData
-  if (props.isExpectedOutput){
-    gameDisplay = {...gameDisplay, level: props.testCase.expectedLevel}
+  if (props.isExpectedOutput) {
+    gameDisplay = { ...gameDisplay, level: props.testCase.expectedLevel }
   }
 
   const levelHeight: number = gameDisplay.level.length
@@ -70,7 +94,7 @@ export default function GameCanvas(props: StateProps) {
         zIndex={0}
         key={`${i},${j}`}
         pointerdown={() => {
-          updateTileType(i,j)
+          updateTileType(i, j)
         }}
       />
     })
@@ -104,8 +128,8 @@ export default function GameCanvas(props: StateProps) {
   />
 
   return (
-    <div className={'checkerboard'} style={{width: STAGE_WIDTH}}>
-      <Stage className={'rounded'} width={STAGE_WIDTH} height={STAGE_HEIGHT} style={{ width: '100%' }} options={{transparent:true}}>
+    <div className={'checkerboard'} style={{ width: STAGE_WIDTH }}>
+      <Stage className={'rounded'} width={STAGE_WIDTH} height={STAGE_HEIGHT} style={{ width: '100%' }} options={{ transparent: true }}>
         <Container position={[CONTAINER_PADDING_X, CONTAINER_PADDING_Y]}>
           {tileSprites}
           {flagSprites}

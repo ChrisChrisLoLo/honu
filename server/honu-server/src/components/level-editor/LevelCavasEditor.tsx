@@ -1,5 +1,6 @@
 import { CloseButton, FormControl, FormHelperText, FormLabel, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { EntityType } from '../../types/EntityType';
 import { TestCase } from '../../types/TestCase';
 import { TileType } from '../../types/TileType';
 import { WinCondType } from '../../types/WinCondType';
@@ -17,7 +18,7 @@ interface PropType {
 export default function LevelCanvasEditor(props: PropType) {
   // just draw and control the tiles
 
-  const [tileToDraw, setTileToDraw] = useState(TileType.GREY)
+  const [tileToDraw, setTileToDraw] = useState<TileType | EntityType>(TileType.GREY)
 
   function handleTileToDraw(e: any) {
     setTileToDraw(e.target.value)
@@ -28,18 +29,25 @@ export default function LevelCanvasEditor(props: PropType) {
 
   return (
     <>
-      <FormControl>
-        <FormLabel>Tile Color</FormLabel>
-        <Select value={tileToDraw} onChange={handleTileToDraw}>
-          {Object.keys(TileType).map(key =>
-            <option key={key} value={(TileType as any)[key]}>
-              {(TileType as any)[key]}
-            </option>)
-          }
-        </Select>
-        <FormHelperText>Click on the tiles to color them</FormHelperText>
-      </FormControl>
-      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedTileType={tileToDraw} isExpectedOutput={props.isExpectedOutput}></GameCanvas>
+      <HStack>
+        <FormControl>
+          <FormLabel>Tile Color</FormLabel>
+          <Select value={tileToDraw} onChange={handleTileToDraw}>
+            {Object.keys(TileType).map(key =>
+              <option key={key} value={(TileType as any)[key]}>
+                {(TileType as any)[key]}
+              </option>)
+            }
+            {Object.keys(EntityType).map(key =>
+              <option key={key} value={(EntityType as any)[key]}>
+                {(EntityType as any)[key]}
+              </option>)
+            }
+          </Select>
+          <FormHelperText>Click on the tiles to color them</FormHelperText>
+        </FormControl>
+      </HStack>
+      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedDrawType={tileToDraw} isExpectedOutput={props.isExpectedOutput}></GameCanvas>
     </>
   )
 }
