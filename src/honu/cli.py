@@ -33,7 +33,7 @@ def get_numbered_level_path(level_num: str):
         f'Level {level_num} does not exist! Is the honu package up to date?')
 
 def is_valid_test_file(file_path:str, level_num: str) -> bool:
-    file_re = re.compile(f'^{level_num}:[\w\-]+.json$')
+    file_re = re.compile(f'^{level_num}-[\w\-]+.json$')
     return file_re.match(file_path) is not None
 
 def import_honu_test_from_file(path: str) -> HonuTest:
