@@ -50,8 +50,6 @@ export default function GameCanvas(props: StateProps) {
       } else if (entity == EntityType.FLAG) {
         const existingFlags = newTestCase.levelData.flags.filter(flag => flag.pos.y == i && flag.pos.x == j)
         if (existingFlags.length > 0) {
-          // remove flag\
-          console.log(existingFlags)
           newTestCase.levelData.flags = newTestCase.levelData.flags.filter(flag => flag != existingFlags[0])
         } else {
           newTestCase.levelData.flags.push({pos:{x:j, y:i}})

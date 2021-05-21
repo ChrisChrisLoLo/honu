@@ -13,12 +13,13 @@ interface PropType {
   setTestCases: Function
 }
 
-export default function LevelCreationForm(props: PropType) {
+export default function LevelTabs(props: PropType) {
 
-  const testCases: TestCase[] = props.metagame.testCases;
+  const testCases: TestCase[] = props.metagame.testCases
+  const [activeTabIndex, setActiveTabIndex] = useState(0)
 
   const defaultTestCase: TestCase = {
-    "name": "can you start the game?",
+    "name": "New Test",
     "levelData": {
       "level": [
         [TileType.WHITE, TileType.WHITE, TileType.WHITE],
@@ -49,12 +50,12 @@ export default function LevelCreationForm(props: PropType) {
 
 
   return (
-    <Tabs variant="enclosed">
+    <Tabs variant="enclosed" onChange={(index) => setActiveTabIndex(index)}>
       <TabList>
         {testCases.map((testCase, i) =>
           <Tab key={i}>
             {testCase.name}
-            <svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => props.setTestCases(testCases.filter((el) => el !== testCase))}>
+            <svg style={{marginLeft:10}} width="16px" height="16px" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => props.setTestCases(testCases.filter((el) => el !== testCase))}>
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </Tab>)}
@@ -64,7 +65,7 @@ export default function LevelCreationForm(props: PropType) {
       <TabPanels>
         {testCases.map((testCase, i) =>
           <TabPanel key={i}>
-            <LevelTab testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} />
+            <LevelTab testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} isActive={i===activeTabIndex}/>
           </TabPanel>
         )}
       </TabPanels>

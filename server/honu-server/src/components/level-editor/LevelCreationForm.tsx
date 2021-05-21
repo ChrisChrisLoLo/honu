@@ -20,7 +20,7 @@ export default function LevelCreationForm() {
       "winCondition": WinCondType.GET_ALL_FLAGS,
       "testCases": [
         {
-          "name": "can you start the game?",
+          "name": "First Test",
           "levelData": {
             "level": [
               [TileType.WHITE, TileType.WHITE, TileType.WHITE],
