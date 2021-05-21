@@ -5,6 +5,7 @@ import { MetaGame } from '../../types/MetaGame';
 import { TestCase } from '../../types/TestCase';
 import { TileType } from '../../types/TileType';
 import { WinCondType } from '../../types/WinCondType';
+import LevelImportExport from './LevelImportExport';
 import LevelTabs from './LevelTabs';
 
 export default function LevelCreationForm() {
@@ -132,9 +133,9 @@ export default function LevelCreationForm() {
                 <option value={WinCondType.MODIFY_BOARD}>{WinCondType.MODIFY_BOARD}</option>
               </Select>
             </FormControl>
+            <LevelImportExport metagame={metagame} setMetagame={setMetagame}/>
           </Stack>
         </Box>
-
         <Box>
           <LevelTabs metagame={metagame} setTestCases={setTestCases} />
         </Box>

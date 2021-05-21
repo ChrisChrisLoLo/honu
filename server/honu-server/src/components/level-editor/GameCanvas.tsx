@@ -109,9 +109,6 @@ export default function GameCanvas(props: StateProps) {
     />
   ) : null;
 
-  // console.log(props.flags)
-  // console.log(flagSprites)
-
   // pivot is required to rotate sprite around the center
   // pivot is placed in the center of the sprite before scaling
   // because pivot causes a offset in the sprite, a readjustment needs to be made to the x and y
@@ -153,8 +150,5 @@ function calcTileScale(levelHeight: number, levelWidth: number): number {
 function calcLevelOffset(levelHeight: number, levelWidth: number, tileSizeInPx: number): number[] {
   const yOffSet = (CONTAINER_HEIGHT - levelHeight * tileSizeInPx) / 2
   const xOffSet = (CONTAINER_WIDTH - levelWidth * tileSizeInPx) / 2
-  // console.log([xOffSet,yOffSet])
-  // console.log(levelHeight*tileSizeInPx)
-  // console.log(CONTAINER_HEIGHT)
   return [xOffSet, yOffSet]
 }
