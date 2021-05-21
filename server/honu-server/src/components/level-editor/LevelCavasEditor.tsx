@@ -11,6 +11,7 @@ interface PropType {
   testCase: TestCase
   winCondition: WinCondType
   setTestCase: Function
+  isExpectedOutput: boolean
 }
 
 export default function LevelCanvasEditor(props: PropType) {
@@ -38,7 +39,7 @@ export default function LevelCanvasEditor(props: PropType) {
         </Select>
         <FormHelperText>Click on the tiles to color them</FormHelperText>
       </FormControl>
-      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedTileType={tileToDraw}></GameCanvas>
+      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedTileType={tileToDraw} isExpectedOutput={props.isExpectedOutput}></GameCanvas>
     </>
   )
 }

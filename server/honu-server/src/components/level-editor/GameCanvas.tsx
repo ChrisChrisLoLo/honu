@@ -7,6 +7,7 @@ import { TileType } from '../../types/TileType';
 import { TestCase } from '../../types/TestCase';
 
 import './GameCanvas.css';
+import { LevelData } from '../../types/LevelData';
 
 // Disable interpolation when scaling, will make texture be pixelated
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
@@ -15,6 +16,7 @@ interface StateProps {
   selectedTileType: TileType
   testCase: TestCase
   setTestCase: Function
+  isExpectedOutput: boolean
 }
 
 const STAGE_WIDTH: number = 600
@@ -32,11 +34,18 @@ export default function GameCanvas(props: StateProps) {
 
   function updateTileType(i: number,j: number){
     const newTestCase = {...props.testCase}
-    newTestCase.levelData.level[i][j] = props.selectedTileType
+    if (props.isExpectedOutput){
+      newTestCase.expectedLevel[i][j] = props.selectedTileType
+    } else {
+      newTestCase.levelData.level[i][j] = props.selectedTileType
+    }
     props.setTestCase(newTestCase)
   }
 
-  const gameDisplay = props.testCase.levelData
+  let gameDisplay: LevelData = props.testCase.levelData
+  if (props.isExpectedOutput){
+    gameDisplay = {...gameDisplay, level: props.testCase.expectedLevel}
+  }
 
   const levelHeight: number = gameDisplay.level.length
   if (levelHeight === 0) {

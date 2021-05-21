@@ -8,13 +8,6 @@ import { WinCondType } from '../../types/WinCondType';
 import LevelTabs from './LevelTabs';
 
 export default function LevelCreationForm() {
-  // const [title, setTitle] = useState('')
-  // const [description, setDescription] = useState('')
-  // const [difficulty, setDifficulty] = useState(1)
-  // const [levelSchemaVersion, setLevelSchemaVersion] = useState('1.0.0')
-  // const [tags, setTags] = useState<string[]>([])
-  // const [winCondition, setWinCondition] = useState<WinCondType>(WinCondType.GET_ALL_FLAGS)
-  // const [testCases, setTestCases] = useState<TestCase[]>([])
 
   const [metagame, setMetagame] = useState<MetaGame>(
     {
@@ -39,13 +32,17 @@ export default function LevelCreationForm() {
               "dir": DirectionType.SOUTH
             },
             "flags": []
-          }
+          }, "expectedLevel": [
+            [TileType.WHITE, TileType.WHITE, TileType.WHITE],
+            [TileType.WHITE, TileType.WHITE, TileType.WHITE],
+            [TileType.WHITE, TileType.WHITE, TileType.WHITE]
+          ]
         }
       ]
     }
   )
 
-  function setTestCases(testCases: TestCase[]){
+  function setTestCases(testCases: TestCase[]) {
     setMetagame({
       ...metagame,
       testCases
@@ -139,7 +136,7 @@ export default function LevelCreationForm() {
         </Box>
 
         <Box>
-          <LevelTabs metagame={metagame} setTestCases={setTestCases}/>
+          <LevelTabs metagame={metagame} setTestCases={setTestCases} />
         </Box>
       </Flex>
     </>

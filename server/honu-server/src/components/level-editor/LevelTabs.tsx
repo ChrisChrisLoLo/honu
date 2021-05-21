@@ -30,7 +30,12 @@ export default function LevelCreationForm(props: PropType) {
         "dir": DirectionType.SOUTH
       },
       "flags": []
-    }
+    }, 
+    "expectedLevel": [
+      [TileType.WHITE, TileType.WHITE, TileType.WHITE],
+      [TileType.WHITE, TileType.WHITE, TileType.WHITE],
+      [TileType.WHITE, TileType.WHITE, TileType.WHITE]
+    ],
   }
 
 
@@ -59,7 +64,7 @@ export default function LevelCreationForm(props: PropType) {
       <TabPanels>
         {testCases.map((testCase, i) =>
           <TabPanel key={i}>
-            <LevelTab testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)}/>
+            <LevelTab testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} />
           </TabPanel>
         )}
       </TabPanels>

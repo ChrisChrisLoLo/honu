@@ -33,7 +33,9 @@ export default function LevelTab(props: PropType) {
       for (let rowI = 0; rowI < currHeight; rowI++) {
         for (let i = 0; i < Math.abs(currWidth - newWidth); i++) {
           const row = newTestCase.levelData.level[rowI]
+          const expectedRow = newTestCase.expectedLevel[rowI]
           shouldExpand ? row.push(TileType.WHITE) : row.pop()
+          shouldExpand ? expectedRow.push(TileType.WHITE) : expectedRow.pop()
         }
       }
     } else {
@@ -41,7 +43,9 @@ export default function LevelTab(props: PropType) {
       const shouldExpand: boolean = newHeight > currHeight;
       for (let i = 0; i < Math.abs(currHeight - newHeight); i++) {
         const level = newTestCase.levelData.level
+        const expectedLevel = newTestCase.expectedLevel 
         shouldExpand ? level.push(Array(currWidth).fill(TileType.WHITE)) : level.pop()
+        shouldExpand ? expectedLevel.push(Array(currWidth).fill(TileType.WHITE)) : expectedLevel.pop()
       }
     }
     props.setTestCase(newTestCase)
@@ -135,7 +139,7 @@ export default function LevelTab(props: PropType) {
           </Select>
         </FormControl>
       </HStack>
-      <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase}/>
+      <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={false}/>
       {
         props.winCondition === WinCondType.CALC_OUTPUT &&
         <FormControl>
@@ -145,12 +149,8 @@ export default function LevelTab(props: PropType) {
         </FormControl>
       }
       {
-        props.winCondition === WinCondType.CALC_OUTPUT &&
-        <FormControl>
-          <FormLabel>Expected output</FormLabel>
-          <Input value={testCase.expectedOutput} name="output" onChange={handleOutputChange} />
-          <FormHelperText>Can be an integer or a string</FormHelperText>
-        </FormControl>
+        props.winCondition === WinCondType.MODIFY_BOARD &&
+        <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={true}/>
       }
     </Stack>
   )
