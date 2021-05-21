@@ -1,11 +1,10 @@
-import { CloseButton, FormControl, FormHelperText, FormLabel, Input, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
+import { CloseButton, FormControl, FormHelperText, FormLabel, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DirectionType } from '../../types/Directions';
 import { MetaGame } from '../../types/MetaGame';
 import { TestCase } from '../../types/TestCase';
 import { TileType } from '../../types/TileType';
-import GameCanvas from './GameCanvas';
-import LevelCanvasEditor from './LevelCavasEditor';
+import LevelTab from './LevelTab';
 
 
 
@@ -34,11 +33,6 @@ export default function LevelCreationForm(props: PropType) {
     }
   }
 
-  function handleTestCaseTitleChange(e: any, i: number) {
-    const newArr = [...testCases]
-    newArr[i].name = e.target.value
-    props.setTestCases(newArr)
-  }
 
   function createSetTestCase(i: number) {
     return function setTestCaseNoInd(newTestCase: TestCase) {
@@ -47,6 +41,7 @@ export default function LevelCreationForm(props: PropType) {
       props.setTestCases(newTestCases)
     }
   }
+
 
   return (
     <Tabs variant="enclosed">
@@ -64,14 +59,7 @@ export default function LevelCreationForm(props: PropType) {
       <TabPanels>
         {testCases.map((testCase, i) =>
           <TabPanel key={i}>
-            <Stack>
-              <FormControl>
-                <FormLabel>Test Case Description</FormLabel>
-                <Input value={testCase.name} name="name" onChange={(e) => handleTestCaseTitleChange(e, i)} />
-              </FormControl>
-              <LevelCanvasEditor testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} isExpectedOutput={false}/>
-            </Stack>
-          
+            <LevelTab testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)}/>
           </TabPanel>
         )}
       </TabPanels>

@@ -15,8 +15,6 @@ interface StateProps {
   selectedTileType: TileType
   testCase: TestCase
   setTestCase: Function
-  // if the canvas is drawing the expected output map
-  isExpectedOutput: boolean
 }
 
 const STAGE_WIDTH: number = 600
