@@ -1,5 +1,5 @@
 import { CloseIcon } from '@chakra-ui/icons';
-import { CloseButton, FormControl, FormHelperText, FormLabel, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
+import { IconButton, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DirectionType } from '../../types/Directions';
 import { MetaGame } from '../../types/MetaGame';

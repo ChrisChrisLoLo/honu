@@ -1,5 +1,5 @@
 import { CopyIcon } from '@chakra-ui/icons';
-import { Button, CloseButton, FormControl, FormHelperText, FormLabel, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
+import { FormControl, FormHelperText, FormLabel, HStack, IconButton, Select} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { EntityType } from '../../types/EntityType';
 import { TestCase } from '../../types/TestCase';

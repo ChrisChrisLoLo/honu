@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, StackDivider, Textarea, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Textarea, useDisclosure } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { DirectionType } from '../../types/Directions';
