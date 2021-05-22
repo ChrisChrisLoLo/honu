@@ -2,6 +2,7 @@ import { Button, Input, Stack, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { MetaGame } from '../../types/MetaGame';
 import { TestCase } from '../../types/TestCase';
+import { WinCondType } from '../../types/WinCondType';
 
 
 interface PropType {
@@ -12,8 +13,19 @@ interface PropType {
 export default function LevelImportExport(props: PropType) {
 
   function downloadMetagameAsJson(exportMetagame: MetaGame) {
-    const exportName: string = `${exportMetagame.id}-${exportMetagame.title.toLowerCase().trim().replaceAll(' ', '_')}`
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportMetagame, undefined, 2));
+
+    // Deep copy the metagame as modifications are made to it
+    const exportMetagameCopy: MetaGame = JSON.parse(JSON.stringify(exportMetagame));
+
+    // Remove the expected board type if it exists when the win condition is not to modify the board
+    if(exportMetagameCopy.winCondition !== WinCondType.MODIFY_BOARD){
+      for( let testCase of exportMetagameCopy.testCases){
+        delete testCase.expectedLevel
+      }
+    }
+
+    const exportName: string = `${exportMetagameCopy.id}-${exportMetagameCopy.title.toLowerCase().trim().replaceAll(' ', '_')}`
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportMetagameCopy, undefined, 2));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", exportName + ".json");
