@@ -2,12 +2,13 @@ export enum TileType {
   EMPTY = 'empty',
 
   WHITE = 'white',
-  BLACK = 'black',
   GREY = 'grey',
+  BLACK = 'black',
   RED = 'red',
   ORANGE = 'orange',
   YELLOW = 'yellow',
   GREEN = 'green',
   BLUE = 'blue',
   PURPLE = 'purple',
+  PINK = 'pink',
 }
