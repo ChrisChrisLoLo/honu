@@ -1,4 +1,5 @@
-import { CloseButton, FormControl, FormHelperText, FormLabel, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
+import { CloseButton, FormControl, FormHelperText, FormLabel, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useProps } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DirectionType } from '../../types/Directions';
 import { MetaGame } from '../../types/MetaGame';
@@ -55,9 +56,7 @@ export default function LevelTabs(props: PropType) {
         {testCases.map((testCase, i) =>
           <Tab key={i}>
             {testCase.name}
-            <svg style={{marginLeft:10}} width="16px" height="16px" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => props.setTestCases(testCases.filter((el) => el !== testCase))}>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <IconButton size={'xs'} style={{marginLeft:10}} aria-label={"Close tab"} icon={<CloseIcon/>} onClick={() => props.setTestCases(testCases.filter((el) => el !== testCase))}/>
           </Tab>)}
         <Tab onClick={() => props.setTestCases([...testCases, defaultTestCase])}>Add</Tab>
       </TabList>

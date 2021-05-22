@@ -1,7 +1,9 @@
 import React from "react"
 import { Link } from "gatsby"
 import { MetaGame } from "../types/MetaGame";
+import Navbar from "../components/Navbar";
 
+// This component is in js since templates do not work as ts files :(
 export default function LevelDescriptionPage(props) {
   const { pageContext } = props
   const { levelContent, links } = pageContext
@@ -9,6 +11,8 @@ export default function LevelDescriptionPage(props) {
   const metagame = levelContent
 
   return (
+    <>
+    <Navbar/>
     <div style={{ maxWidth: `960px`, margin: `1.45rem` }}>
       {metagame.id}
       <ul>
@@ -27,5 +31,6 @@ export default function LevelDescriptionPage(props) {
         })} */}
       </ul>
     </div>
+    </>
   )
 }
