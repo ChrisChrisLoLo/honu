@@ -19,7 +19,8 @@
           ["white", "white", "white", "white", "white", "white"]
         ],
         "player": {
-          "pos": { "x": 0, "y": 0 }
+          "pos": { "x": 0, "y": 0 },
+          "dir": "S"
         },
         "flags": [{ "pos": { "x": 2, "y": 1 }}]
       }

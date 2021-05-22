@@ -1,5 +1,6 @@
-import { Box, Flex, FormControl, FormHelperText, FormLabel, Grid, GridItem, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack } from '@chakra-ui/react';
+import { Box, Button, CSSReset, Flex, FormControl, FormHelperText, FormLabel, Grid, GridItem, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Textarea, useDisclosure } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { DirectionType } from '../../types/Directions';
 import { MetaGame } from '../../types/MetaGame';
 import { TestCase } from '../../types/TestCase';
@@ -9,13 +10,16 @@ import LevelImportExport from './LevelImportExport';
 import LevelTabs from './LevelTabs';
 
 export default function LevelCreationForm() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [metagame, setMetagame] = useState<MetaGame>(
     {
       "id": 0,
       "title": "hello_world",
-      "description": "a starting template",
+      "shortDescription": "a starting template",
+      "markdownDescription": "# Can you start the test?",
       "difficulty": 1,
+      "supportedLibVersion": "0.0.0",
       "levelSchemaVersion": "1.0.0",
       "tags": [],
       "winCondition": WinCondType.GET_ALL_FLAGS,
@@ -104,8 +108,13 @@ export default function LevelCreationForm() {
               <Input value={metagame.title} name="title" onChange={handleMetagameChange} />
             </FormControl>
             <FormControl>
-              <FormLabel>Description</FormLabel>
-              <Input value={metagame.description} name="description" onChange={handleMetagameChange} />
+              <FormLabel>Short Description</FormLabel>
+              <Input value={metagame.shortDescription} name="shortDescription" onChange={handleMetagameChange} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Markdown Description</FormLabel>
+              <Button onClick={onOpen}>Preview</Button>
+              <Textarea value={metagame.markdownDescription} name="markdownDescription" onChange={handleMetagameChange} />
             </FormControl>
             <FormControl>
               <FormLabel>Difficulty</FormLabel>
@@ -120,6 +129,12 @@ export default function LevelCreationForm() {
             <FormControl>
               <FormLabel>Level Schema Version</FormLabel>
               <Input value={metagame.levelSchemaVersion} name="levelSchemaVersion" onChange={handleMetagameChange} />
+              <FormHelperText>Leave as is if unsure</FormHelperText>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Supported Library Version</FormLabel>
+              <Input value={metagame.supportedLibVersion} name="supportedLibVersion" onChange={handleMetagameChange} />
+              <FormHelperText>Leave as is if unsure</FormHelperText>
             </FormControl>
             <FormControl>
               <FormLabel>Tags (words seperated by ',')</FormLabel>
@@ -140,6 +155,16 @@ export default function LevelCreationForm() {
           <LevelTabs metagame={metagame} setTestCases={setTestCases} />
         </Box>
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ReactMarkdown>{metagame.markdownDescription}</ReactMarkdown>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   )
 }

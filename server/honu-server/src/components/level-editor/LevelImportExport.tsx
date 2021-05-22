@@ -1,6 +1,7 @@
 import { Button, Input, Stack, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { MetaGame } from '../../types/MetaGame';
+import { TestCase } from '../../types/TestCase';
 
 
 interface PropType {
@@ -32,7 +33,20 @@ export default function LevelImportExport(props: PropType) {
     const file: File = filelist[0]
     const text = await file.text()
     const metagame: MetaGame = JSON.parse(text)
+    metagame.testCases = metagame.testCases.map((testCase)=>populateExpectedLevelIfNotExists(testCase))
     props.setMetagame(metagame)
+  }
+
+  /**
+   * This application needs every test to have an expectedlevel regarless of wincondition.
+   * This function populates the expectedlevel field if it does not exist in the JSON file.
+   */
+  function populateExpectedLevelIfNotExists(testCase: TestCase): TestCase {
+    const newTestCase: TestCase = { ...testCase }
+    if(!newTestCase.expectedLevel){
+      newTestCase.expectedLevel = JSON.parse(JSON.stringify(newTestCase.levelData.level));
+    }
+    return newTestCase
   }
 
   return (
