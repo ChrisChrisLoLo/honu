@@ -11,10 +11,16 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import React from 'react';
+import { navigate } from 'gatsby-link';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+interface NavLinkProps {
+  children: ReactNode,
+  href: string
+}
+
+const NavLink = ({ children, href }: { children: ReactNode , href:string }) => (
   <Link
     px={2}
     py={1}
@@ -23,7 +29,12 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}>
+    href={'#'}
+    onClick={(e) => {
+      e.preventDefault();
+      navigate(href);
+    }}
+    >
     {children}
   </Link>
 );
@@ -43,23 +54,21 @@ export default function Navbar() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>Honu</Box>
+            <Box><NavLink href={'/'}>Honu</NavLink></Box>
             <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+              <NavLink href={'/levels'}>Levels</NavLink>
+              <NavLink href={'/create-level'}>Create Level</NavLink>
             </HStack>
           </HStack>
         </Flex>
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+              <NavLink href={'/levels'}>Levels</NavLink>
+              <NavLink href={'/create-level'}>Create Level</NavLink>
             </Stack>
           </Box>
         ) : null}
