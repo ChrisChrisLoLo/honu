@@ -1,7 +1,9 @@
 import { TestCase } from "./TestCase";
 import { WinCondType } from "./WinCondType";
 
-export interface MetaGame{
+
+// Interface used for searching levels
+export interface MetaGameDesc{
   // Used as an id for both the website and library
   levelId: number
   title: string
@@ -19,6 +21,10 @@ export interface MetaGame{
   tags: string[]
   // How the player can win
   winCondition: WinCondType
+}
+
+// Interfaced used when manipulating the levels and tests within them
+export interface MetaGame extends MetaGameDesc{
   // Test cases
   testCases: TestCase[]
 }
