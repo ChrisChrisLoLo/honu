@@ -14,7 +14,7 @@ export default function LevelCreationForm() {
 
   const [metagame, setMetagame] = useState<MetaGame>(
     {
-      "id": 0,
+      "levelId": 0,
       "title": "hello_world",
       "shortDescription": "a starting template",
       "markdownDescription": "# Can you start the test?",
@@ -73,10 +73,10 @@ export default function LevelCreationForm() {
   }
 
   function handleIdInput(id_string: string) {
-    const id = parseInt(id_string)
+    const levelId = parseInt(id_string)
     setMetagame({
       ...metagame,
-      id
+      levelId
     })
   }
 
@@ -95,7 +95,7 @@ export default function LevelCreationForm() {
           <Stack>
             <FormControl>
               <FormLabel>Id</FormLabel>
-              <NumberInput min={0} value={metagame.id} name="id" onChange={(valueString) => handleIdInput(valueString)}>
+              <NumberInput min={0} value={metagame.levelId} name="levelId" onChange={(valueString) => handleIdInput(valueString)}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />

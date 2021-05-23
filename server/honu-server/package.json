@@ -27,6 +27,8 @@
     "framer-motion": "^4.1.17",
     "gatsby": "^3.4.1",
     "gatsby-plugin-ts-loader": "^0.1.0",
+    "gatsby-source-filesystem": "^3.5.0",
+    "gatsby-transformer-json": "^3.5.0",
     "pixi.js": "^6.0.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

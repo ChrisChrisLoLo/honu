@@ -24,7 +24,7 @@ export default function LevelImportExport(props: PropType) {
       }
     }
 
-    const exportName: string = `${exportMetagameCopy.id}-${exportMetagameCopy.title.toLowerCase().trim().replaceAll(' ', '_')}`
+    const exportName: string = `${exportMetagameCopy.levelId}-${exportMetagameCopy.title.toLowerCase().trim().replaceAll(' ', '_')}`
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportMetagameCopy, undefined, 2));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);

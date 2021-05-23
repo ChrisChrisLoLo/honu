@@ -18,13 +18,13 @@ exports.createPages = ({ actions }) => {
   dir.closeSync();
   
   for (let file_name of file_names) {
-    console.log("SFFF"+fs.readFileSync(path.join(levelDir,file_name)));
+    // console.log("SFFF"+fs.readFileSync(path.join(levelDir,file_name)));
     const jsonDoc = JSON.parse(fs.readFileSync(path.join(levelDir,file_name), "utf-8"));
     
-    console.log("step2 "+require.resolve('./src/templates/LevelDescriptionPage.js'));
+    // console.log("step2 "+require.resolve('./src/templates/LevelDescriptionPage.js'));
     createPage({
       // path: element.path,
-      path: `/levels/${jsonDoc.id}`,
+      path: `/levels/${jsonDoc.levelId}`,
       // component: require.resolve(path.join('.','src','templates','LevelDescriptionPage.tsx')),
       // component: require.resolve('./src/templates/LevelDescriptionPage.tsx'),
       component: require.resolve('./src/templates/LevelDescriptionPage.js'),

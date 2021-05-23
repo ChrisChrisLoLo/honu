@@ -3,7 +3,7 @@ import { WinCondType } from "./WinCondType";
 
 export interface MetaGame{
   // Used as an id for both the website and library
-  id: number
+  levelId: number
   title: string
   // Short description. Used to give a brief description of the level
   shortDescription: string

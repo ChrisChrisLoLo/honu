@@ -19,7 +19,7 @@ export default function LevelDescriptionPageContent(props: PropsType) {
       <title>Honu Level: {metagame.title}</title>
       <Navbar />
       <div style={{ maxWidth: `960px`, margin: `1.45rem` }}>
-        {metagame.id}
+        {metagame.levelId}
         <ul>
           IOIIIIUIIII
         </ul>
