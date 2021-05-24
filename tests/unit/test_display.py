@@ -10,10 +10,10 @@ def test_display_creation():
     assert(len(display.tile_graphics) == 2)
     assert(len(display.tile_graphics[0]) == 2)
 
-    assert(display.tile_graphics[0][0].fill == Tile.GREEN.value)
-    assert(display.tile_graphics[0][1].fill == Tile.YELLOW.value)
-    assert(display.tile_graphics[1][0].fill == Tile.BLUE.value)
-    assert(display.tile_graphics[1][1].fill == Tile.EMPTY.value)
+    assert(display.tile_graphics[0][0].fill_name == Tile.GREEN.value)
+    assert(display.tile_graphics[0][1].fill_name == Tile.YELLOW.value)
+    assert(display.tile_graphics[1][0].fill_name == Tile.BLUE.value)
+    assert(display.tile_graphics[1][1].fill_name == Tile.EMPTY.value)
 
     assert(display.turtle_graphics)
     assert((display.turtle_graphics.i, display.turtle_graphics.j) == (0, 0))
@@ -45,8 +45,8 @@ def test_tile_update():
                 [Flag((1, 0))])
     display = Display(game, 600, 600, 0)
 
-    assert(display.tile_graphics[0][0].fill == Tile.GREEN.value)
+    assert(display.tile_graphics[0][0].fill_name == Tile.GREEN.value)
 
     game.write_below(Tile.ORANGE)
 
-    assert(display.tile_graphics[0][0].fill == Tile.ORANGE.value)
+    assert(display.tile_graphics[0][0].fill_name == Tile.ORANGE.value)
