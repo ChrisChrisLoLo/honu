@@ -14,16 +14,23 @@ def cli():
 
 
 @cli.command()
-@click.argument('level')
 @click.argument('code_file')
+@click.option('-l','--level','level')
 def test(level:str, code_file:str):
-    level_json_path = get_numbered_level_path(
-        level) if level.isdigit() else level
+    """
+    Level is optional, useful for overriding the file set in test files
+    """
 
     ht: HonuTest = import_honu_test_from_file(code_file)
 
-    ht.run_test(level_json_path)
+    # Override path to test
+    if level:
+        level_json_path = get_numbered_level_path(
+            level) if level.isdigit() else level
+        if level_json_path:
+            ht.path_to_test = ht.path_to_test
 
+    ht.run_test()
 
 def get_numbered_level_path(level_num: str):
     for file_name in pkg_resources.resource_listdir('honu.static.levels', ''):

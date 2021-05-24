@@ -1,6 +1,6 @@
 from honu import HonuTest, Tile
 
-ht = HonuTest(enable_display=True)
+ht = HonuTest(enable_display=True,level="1")
 
 @ht.code
 def run_code(h):

@@ -1,5 +1,8 @@
 from typing import Callable, Optional, List
 import json
+import re
+
+import pkg_resources
 
 from honu.game import Game, Tile, Player, Flag, WinCondition
 from honu.testcases import ITestCase, BaseTest, FlagTestCase, OutputTestCase, LevelTestCase
@@ -47,11 +50,12 @@ class Honu():
 
 
 class HonuTest():
-    def __init__(self, enable_display: bool = False, path_to_test: Optional[str] = None):
+    def __init__(self, enable_display: bool = False, level: Optional[str] = None):
         self.enable_display = enable_display
         self.screen_height = 800
         self.screen_width = 600
         self.sleep_time = 0.2
+        self.level = level
 
     def load_tests_from_json(self, path_to_test:str) -> List[ITestCase]:
         tests: List[ITestCase] = []
@@ -62,7 +66,7 @@ class HonuTest():
         with open(path_to_test) as file:
             json_dict = json.load(file)
             title = json_dict['title']
-            lib_version = json_dict['libVersion']
+            lib_version = json_dict['supportedLibVersion']
             win_condition: WinCondition = json_dict['winCondition'].lower()
             test_cases = json_dict['testCases']
 
@@ -101,13 +105,18 @@ class HonuTest():
 
         return Game(level, player, flags)
 
-    def code(self, code_to_execute: Callable):
+    def code(self, code_to_execute: Callable) -> None:
         """
         Sets the code to be run for this test 
         """
         self.code_to_execute = code_to_execute
 
-    def run_test(self, path_to_test:str):
+    def run_test(self) -> None:
+
+        if not self.level:
+            raise Exception('No test file path provided in the command line nor the code file!')
+
+        path_to_test = self.get_test_json_path()
 
         test_cases: List[ITestCase] = self.load_tests_from_json(path_to_test)
 
@@ -139,3 +148,22 @@ class HonuTest():
                 test_status += '.'
 
         print(test_status)
+
+    def get_test_json_path(self) -> str:
+        if self.level:
+            level_json_path = self.get_numbered_level_path(
+                self.level) if self.level.isdigit() else self.level
+            return level_json_path
+        else:
+            raise Exception('No level was set in the cli or the test file!')
+
+    def get_numbered_level_path(self, level_num: str) -> str:
+        for file_name in pkg_resources.resource_listdir('honu.static.levels', ''):
+            if self.is_valid_test_file(file_name, level_num):
+                return pkg_resources.resource_filename('honu.static.levels', file_name)
+        raise Exception(
+            f'Level {level_num} does not exist! Is the honu package up to date?')
+
+    def is_valid_test_file(self, file_path:str, level_num: str) -> bool:
+        file_re = re.compile(f'^{level_num}-[\w\-]+.json$')
+        return file_re.match(file_path) is not None
