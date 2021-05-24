@@ -1,4 +1,5 @@
 from typing import Callable, Optional, List
+import time
 import json
 import re
 
@@ -133,6 +134,9 @@ class HonuTest():
             # TODO: catch exceptions
             if not self.code_to_execute:
                 raise Exception('No code has been specified with `@__.code`!')
+            
+            # Let user focus on the window
+            time.sleep(self.sleep_time)
 
             self.code_to_execute(game)
 
