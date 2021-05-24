@@ -11,4 +11,5 @@ export enum TileType {
   BLUE = 'blue',
   PURPLE = 'purple',
   PINK = 'pink',
+  BROWN = 'brown'
 }

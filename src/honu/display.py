@@ -1,6 +1,6 @@
 from honu.game import Tile
 from honu.graphics import GraphWin, Rectangle, Point, Text, Image  # type: ignore
-from honu.static.sprites import SPRITE_SIZE_PX
+from honu.static.sprites import SPRITE_SIZE_PX, TILE_COLORS
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
@@ -14,20 +14,20 @@ TURTLE_MOVEMENT_SLEEP = 0.01
 
 
 class TileGraphic():
-    def __init__(self, win, start_x, start_y, end_x, end_y, fill):
-        self.fill = fill
+    def __init__(self, win, start_x, start_y, end_x, end_y, fill_name):
+        self.fill_name = fill_name
         self.win = win
         self.rect = Rectangle(Point(start_x, start_y), Point(end_x, end_y))
-        if fill == Tile.EMPTY.value:
+        if self.fill_name == Tile.EMPTY.value:
             # Don't draw tile
             self.rect.setOutline('')
         else:
-            self.rect.setFill(fill)
+            self.rect.setFill(TILE_COLORS[self.fill_name])
         self.rect.draw(self.win)
 
-    def set_fill(self, fill):
-        self.fill = fill
-        self.rect.setFill(fill)
+    def set_fill(self, fill_name):
+        self.fill_name = fill_name
+        self.rect.setFill(TILE_COLORS[self.fill_name])
 
 
 class TurtleGraphic():
@@ -154,7 +154,7 @@ class Display():
         for i in range(len(self.tile_graphics)):
             for j in range(len(self.tile_graphics[i])):
                 tile: TileGraphic = self.tile_graphics[i][j]
-                if tile.fill != observable_game.level[i][j].value:
+                if tile.fill_name != observable_game.level[i][j].value:
                     tile.set_fill(observable_game.level[i][j].value)
 
         flag_coords = {
