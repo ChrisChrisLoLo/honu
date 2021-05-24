@@ -23,25 +23,11 @@ def test(level:str, code_file:str):
 
     ht: HonuTest = import_honu_test_from_file(code_file)
 
-    # Override path to test
+    # Override level to test
     if level:
-        level_json_path = get_numbered_level_path(
-            level) if level.isdigit() else level
-        if level_json_path:
-            ht.path_to_test = ht.path_to_test
+        ht.level = level
 
     ht.run_test()
-
-def get_numbered_level_path(level_num: str):
-    for file_name in pkg_resources.resource_listdir('honu.static.levels', ''):
-        if is_valid_test_file(file_name, level_num):
-            return pkg_resources.resource_filename('honu.static.levels', file_name)
-    raise Exception(
-        f'Level {level_num} does not exist! Is the honu package up to date?')
-
-def is_valid_test_file(file_path:str, level_num: str) -> bool:
-    file_re = re.compile(f'^{level_num}-[\w\-]+.json$')
-    return file_re.match(file_path) is not None
 
 def import_honu_test_from_file(path: str) -> HonuTest:
     import_name = prepare_import(path)
