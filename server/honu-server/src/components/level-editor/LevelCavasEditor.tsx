@@ -59,7 +59,7 @@ export default function LevelCanvasEditor(props: PropType) {
           <IconButton aria-label={'Copy from level'} icon={<CopyIcon/>} onClick={copyFromInitLevel} />
         }
       </HStack>
-      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedDrawType={tileToDraw} isExpectedOutput={props.isExpectedOutput}></GameCanvas>
+      <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedDrawType={tileToDraw} isExpectedOutput={props.isExpectedOutput} readOnly={false}></GameCanvas>
     </>
   )
 }
