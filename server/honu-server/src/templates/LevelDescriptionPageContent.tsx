@@ -1,7 +1,9 @@
 import React from "react"
-import { Link } from "gatsby"
 import { MetaGame } from "../types/MetaGame";
 import Navbar from "../components/Navbar";
+import { Box, Heading, HStack, Text } from "@chakra-ui/react";
+import ReactMarkdown from "react-markdown";
+import TestCasePreview from "../components/level-detail/LevelPreviewTabs";
 
 interface PropsType {
   pageContext: any
@@ -14,16 +16,37 @@ export default function LevelDescriptionPageContent(props: PropsType) {
 
   const metagame: MetaGame = levelContent
 
+  function capitalize(s:string)
+  {
+      return s[0].toUpperCase() + s.slice(1);
+  }
+
   return (
     <main>
       <title>Honu Level: {metagame.title}</title>
       <Navbar />
-      <div style={{ maxWidth: `960px`, margin: `1.45rem` }}>
-        {metagame.levelId}
-        <ul>
-          IOIIIIUIIII
-        </ul>
-      </div>
+      <HStack>
+      <Box>
+        <Heading>
+          {metagame.title}
+        </Heading>
+        <Heading>
+          {metagame.shortDescription}
+        </Heading>
+        <Text>
+          Difficulty: {metagame.difficulty}/5
+        </Text>
+        <Text>
+          Win Condition: {capitalize(metagame.winCondition.replaceAll('_',' '))}
+        </Text>
+        <ReactMarkdown>
+          {metagame.markdownDescription}
+        </ReactMarkdown>
+      </Box>
+      <Box>
+        <TestCasePreview metagame={metagame}/>
+      </Box>
+      </HStack>
     </main>
   )
 }

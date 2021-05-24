@@ -14,7 +14,8 @@ import { EntityType } from '../../types/EntityType';
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 interface StateProps {
-  selectedDrawType: TileType | EntityType
+  readOnly: boolean
+  selectedDrawType: TileType | EntityType 
   testCase: TestCase
   setTestCase: Function
   isExpectedOutput: boolean
@@ -34,6 +35,10 @@ const CONTAINER_HEIGHT: number = STAGE_HEIGHT - 2 * CONTAINER_PADDING_Y
 export default function GameCanvas(props: StateProps) {
 
   function updateTileType(i: number, j: number) {
+    if (props.readOnly){
+      return
+    }
+
     const newTestCase = { ...props.testCase }
     if (Object.values(TileType).includes(props.selectedDrawType as TileType)) {
       const tile = props.selectedDrawType as TileType
