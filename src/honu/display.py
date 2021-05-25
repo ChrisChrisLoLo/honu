@@ -1,10 +1,16 @@
 from honu.game import Tile
-from honu.graphics import GraphWin, Rectangle, Point, Text, Image  # type: ignore
+from honu.graphics import GraphWin, Rectangle, Point, Text, Image as ImageGraphic  # type: ignore
 from honu.static.sprites import SPRITE_SIZE_PX, TILE_COLORS
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
-from pkg_resources import resource_string
+from pkg_resources import resource_string, resource_stream
+from PIL import Image, ImageTk
+import io
+import base64
+import timeit
+
+
 
 if TYPE_CHECKING:
     from honu.game import Game
@@ -12,22 +18,37 @@ if TYPE_CHECKING:
 TURTLE_MOVEMENT_FRAMES = 20
 TURTLE_MOVEMENT_SLEEP = 0.01
 
+def image_to_byte_array(image:Image) -> bytes:
+  imgByteArr = io.BytesIO()
+  image.save(imgByteArr, format='png')
+  bytes = imgByteArr.getvalue()
+  return bytes
+
+def generate_tile_graphics(tile_enum: Tile, scale: int) -> bytes:
+    im = Image.open(io.BytesIO(resource_string('honu.static.sprites',f'tile_{tile_enum.value}.png')))
+    resized_im =  im.resize((im.width*scale,im.height*scale), Image.ANTIALIAS)
+
+    return image_to_byte_array(resized_im)
 
 class TileGraphic():
-    def __init__(self, win, start_x, start_y, end_x, end_y, fill_name):
+    tile_sprites = None
+
+    def __init__(self, win, center_x, center_y, tile_size_px, fill_name):
         self.fill_name = fill_name
+        self.tile_size_px = tile_size_px
         self.win = win
-        self.rect = Rectangle(Point(start_x, start_y), Point(end_x, end_y))
-        if self.fill_name == Tile.EMPTY.value:
-            # Don't draw tile
-            self.rect.setOutline('')
-        else:
-            self.rect.setFill(TILE_COLORS[self.fill_name])
-        self.rect.draw(self.win)
+
+        # Generate the scaled sprites lazily. Keep them in memory
+        if not TileGraphic.tile_sprites:
+            TileGraphic.tile_sprites = {enum.value:generate_tile_graphics(enum, tile_size_px//SPRITE_SIZE_PX) for enum in Tile}
+
+        self.image = ImageGraphic(Point(center_x,center_y),tile_size_px,tile_size_px,TileGraphic.tile_sprites[fill_name],1)
+
+        self.image.draw(self.win)
 
     def set_fill(self, fill_name):
-        self.fill_name = fill_name
-        self.rect.setFill(TILE_COLORS[self.fill_name])
+        self.image.img.put(TileGraphic.tile_sprites[fill_name])
+        pass
 
 
 class TurtleGraphic():
@@ -39,7 +60,7 @@ class TurtleGraphic():
         self.j = j
         self.tile_size_px = tile_size_px
 
-        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,TurtleGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
+        self.image = ImageGraphic(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,TurtleGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
 
         self.image.draw(self.win)
 
@@ -68,7 +89,7 @@ class FlagGraphic():
         self.j = j
         self.tile_size_px = tile_size_px
 
-        self.image = Image(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,FlagGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
+        self.image = ImageGraphic(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,FlagGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
         self.image.draw(self.win)
 
     def undraw(self) -> None:
@@ -108,14 +129,11 @@ class Display():
         for i, row in enumerate(game.level):
             mapped_row: List[TileGraphic] = []
             for j, tile in enumerate(row):
-                start_x = j*self.tile_size_px+self.level_offset_x
-                start_y = i*self.tile_size_px+self.level_offset_y
-                end_x = start_x + self.tile_size_px
-                end_y = start_y + self.tile_size_px
-                print(tile)
+                center_x = (j+0.5)*self.tile_size_px+self.level_offset_x
+                center_y = (i+0.5)*self.tile_size_px+self.level_offset_y
                 fill = tile.value
                 tile_graphic = TileGraphic(
-                    self.win, start_x, start_y, end_x, end_y, fill)
+                    self.win, center_x, center_y, self.tile_size_px, fill)
                 mapped_row.append(tile_graphic)
             mapped_graphics.append(mapped_row)
         return mapped_graphics
