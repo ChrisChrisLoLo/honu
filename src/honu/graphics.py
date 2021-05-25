@@ -788,10 +788,9 @@ class Image(GraphicsObject):
         if len(args) == 1:  # file name provided
             self.img = tk.PhotoImage(file=args[0], master=_root)
         else:  # width and height provided
-            width, height, data, zoom_factor = args
+            width, height, data = args
             self.img = tk.PhotoImage(
                 master=_root, width=width, height=height, data=data)
-            self.img = self.img.zoom(zoom_factor)
 
     def __repr__(self):
         return "Image({}, {}, {})".format(self.anchor, self.getWidth(), self.getHeight())

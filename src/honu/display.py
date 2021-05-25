@@ -2,7 +2,7 @@ from honu.game import Tile
 from honu.graphics import GraphWin, Point, Text, Image as ImageGraphic  # type: ignore
 from honu.static.sprites import SPRITE_SIZE_PX
 from math import floor
-from typing import List, Tuple, TYPE_CHECKING
+from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 from time import sleep
 from pkg_resources import resource_string
 from PIL import Image
@@ -15,20 +15,25 @@ if TYPE_CHECKING:
 TURTLE_MOVEMENT_FRAMES = 20
 TURTLE_MOVEMENT_SLEEP = 0.01
 
-def image_to_byte_array(image:Image) -> bytes:
-  imgByteArr = io.BytesIO()
-  image.save(imgByteArr, format='png')
-  bytes = imgByteArr.getvalue()
-  return bytes
 
-def generate_tile_graphics(tile_enum: Tile, scale: int) -> bytes:
-    im = Image.open(io.BytesIO(resource_string('honu.static.sprites',f'tile_{tile_enum.value}.png')))
-    resized_im =  im.resize((im.width*scale,im.height*scale), Image.ANTIALIAS)
+def image_to_byte_array(image: Image) -> bytes:
+    imgByteArr = io.BytesIO()
+    image.save(imgByteArr, format='png')
+    bytes = imgByteArr.getvalue()
+    return bytes
+
+
+def generate_graphics(sprite_path: str, scale: int) -> bytes:
+    im = Image.open(io.BytesIO(resource_string(
+        'honu.static.sprites', sprite_path)))
+    # Note: may need to antialias if sprites get bigger (use Image.ANTIALIAS)
+    resized_im = im.resize((im.width*scale, im.height*scale), 0)
 
     return image_to_byte_array(resized_im)
 
+
 class TileGraphic():
-    tile_sprites = None
+    tile_sprites: Optional[Dict[str, bytes]] = None
 
     def __init__(self, win, center_x, center_y, tile_size_px, fill_name):
         self.fill_name = fill_name
@@ -37,9 +42,11 @@ class TileGraphic():
 
         # Generate the scaled sprites lazily. Keep them in memory
         if not TileGraphic.tile_sprites:
-            TileGraphic.tile_sprites = {enum.value:generate_tile_graphics(enum, tile_size_px//SPRITE_SIZE_PX) for enum in Tile}
+            TileGraphic.tile_sprites = {enum.value: generate_graphics(
+                f'tile_{enum.value}.png', tile_size_px//SPRITE_SIZE_PX) for enum in Tile}
 
-        self.image = ImageGraphic(Point(center_x,center_y),tile_size_px,tile_size_px,TileGraphic.tile_sprites[fill_name],1)
+        self.image = ImageGraphic(Point(
+            center_x, center_y), tile_size_px, tile_size_px, TileGraphic.tile_sprites[fill_name])
 
         self.image.draw(self.win)
 
@@ -49,7 +56,7 @@ class TileGraphic():
 
 
 class TurtleGraphic():
-    sprite = resource_string('honu.static.sprites','turtle.png')
+    sprite: Optional[bytes] = None
 
     def __init__(self, win, center_x, center_y, i, j, tile_size_px):
         self.win = win
@@ -57,7 +64,12 @@ class TurtleGraphic():
         self.j = j
         self.tile_size_px = tile_size_px
 
-        self.image = ImageGraphic(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,TurtleGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
+        if not TurtleGraphic.sprite:
+            TurtleGraphic.sprite = generate_graphics(
+                f'turtle.png', tile_size_px//SPRITE_SIZE_PX)
+
+        self.image = ImageGraphic(
+            Point(center_x, center_y), tile_size_px, tile_size_px, TurtleGraphic.sprite)
 
         self.image.draw(self.win)
 
@@ -78,7 +90,7 @@ class TurtleGraphic():
 
 
 class FlagGraphic():
-    sprite = resource_string('honu.static.sprites','flag.png')
+    sprite: Optional[bytes] = None
 
     def __init__(self, win, center_x, center_y, i, j, tile_size_px) -> None:
         self.win = win
@@ -86,7 +98,12 @@ class FlagGraphic():
         self.j = j
         self.tile_size_px = tile_size_px
 
-        self.image = ImageGraphic(Point(center_x,center_y),SPRITE_SIZE_PX,SPRITE_SIZE_PX,FlagGraphic.sprite,tile_size_px//SPRITE_SIZE_PX)
+        if not FlagGraphic.sprite:
+            FlagGraphic.sprite = generate_graphics(
+                f'flag.png', tile_size_px//SPRITE_SIZE_PX)
+
+        self.image = ImageGraphic(Point(center_x, center_y), tile_size_px,
+                                  tile_size_px, FlagGraphic.sprite)
         self.image.draw(self.win)
 
     def undraw(self) -> None:
@@ -112,8 +129,10 @@ class Display():
 
         self.win = GraphWin('Kame Code', width, height)
 
-        self.tile_graphics: List[List[TileGraphic]] = self.map_tiles_to_graphics(game)
-        self.flag_graphics: List[FlagGraphic] = self.map_flags_to_graphics(game)
+        self.tile_graphics: List[List[TileGraphic]
+                                 ] = self.map_tiles_to_graphics(game)
+        self.flag_graphics: List[FlagGraphic] = self.map_flags_to_graphics(
+            game)
         self.turtle_graphics: TurtleGraphic = self.map_turtle_to_graphics(game)
 
     def calc_level_offset(self) -> Tuple[int, int]:
@@ -196,7 +215,8 @@ class Display():
         sleep(self.sleep_time)
 
     def prompt_close(self):
-        message = Text(Point(self.win.getWidth()/2, 20), 'Click anywhere to quit.')
+        message = Text(Point(self.win.getWidth()/2, 20),
+                       'Click anywhere to quit.')
         message.draw(self.win)
         self.win.getMouse()
         self.win.close()
