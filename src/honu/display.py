@@ -1,15 +1,12 @@
 from honu.game import Tile
-from honu.graphics import GraphWin, Rectangle, Point, Text, Image as ImageGraphic  # type: ignore
-from honu.static.sprites import SPRITE_SIZE_PX, TILE_COLORS
+from honu.graphics import GraphWin, Point, Text, Image as ImageGraphic  # type: ignore
+from honu.static.sprites import SPRITE_SIZE_PX
 from math import floor
 from typing import List, Tuple, TYPE_CHECKING
 from time import sleep
-from pkg_resources import resource_string, resource_stream
-from PIL import Image, ImageTk
+from pkg_resources import resource_string
+from PIL import Image
 import io
-import base64
-import timeit
-
 
 
 if TYPE_CHECKING:
