@@ -6,6 +6,7 @@ setup(
     name="Honu",
     install_requires=[
         "click>=8.0.0",
+        "Pillow>=8.2.0"
     ],
     extras_require={
     },
