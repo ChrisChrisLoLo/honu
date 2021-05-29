@@ -51,3 +51,28 @@ def test_tile_update():
     game.write_below(Tile.ORANGE)
 
     assert(display.tile_graphics[0][0].fill_name == Tile.ORANGE.value)
+
+def test_turtle_movement():
+    game = Game([[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]],
+                Player((0, 0), Direction.SOUTH),
+                [Flag((1, 0))])
+    display = Display(game, 600, 600, 0)
+    
+    assert((display.turtle_graphics.i,display.turtle_graphics.j)==(0,0))
+    assert(display.turtle_graphics.dir == Direction.SOUTH)
+
+    game.right()
+    assert((display.turtle_graphics.i,display.turtle_graphics.j)==(1,0))
+    assert(display.turtle_graphics.dir == Direction.SOUTH)
+    
+    game.turn_right()
+    assert((display.turtle_graphics.i,display.turtle_graphics.j)==(1,0))
+    assert(display.turtle_graphics.dir == Direction.WEST)
+
+    game.backward()
+    assert((display.turtle_graphics.i,display.turtle_graphics.j)==(1,0))
+    assert(display.turtle_graphics.dir == Direction.WEST)
+
+    game.forward()
+    assert((display.turtle_graphics.i,display.turtle_graphics.j)==(0,0))
+    assert(display.turtle_graphics.dir == Direction.WEST)

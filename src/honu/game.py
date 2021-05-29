@@ -149,9 +149,11 @@ class Game():
     def turn_left(self) -> bool:
         self.player.dir = dir_arr[(dir_arr.index(
             self.player.dir)-1) % len(dir_arr)]
+        self.update_display()
         return True
 
     def turn_right(self) -> bool:
         self.player.dir = dir_arr[(dir_arr.index(
             self.player.dir)+1) % len(dir_arr)]
+        self.update_display()
         return True

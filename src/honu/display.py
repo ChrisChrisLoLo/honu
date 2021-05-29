@@ -1,4 +1,4 @@
-from honu.game import Tile
+from honu.game import Direction, Tile
 from honu.graphics import GraphWin, Point, Text, Image as ImageGraphic  # type: ignore
 from honu.static.sprites import SPRITE_SIZE_PX
 from math import floor
@@ -23,11 +23,14 @@ def image_to_byte_array(image: Image) -> bytes:
     return bytes
 
 
-def generate_graphics(sprite_path: str, scale: int) -> bytes:
+def generate_graphics(sprite_path: str, scale: int, rotation: int = 0) -> bytes:
     im = Image.open(io.BytesIO(resource_string(
         'honu.static.sprites', sprite_path)))
     # Note: may need to antialias if sprites get bigger (use Image.ANTIALIAS)
     resized_im = im.resize((im.width*scale, im.height*scale), 0)
+
+    if rotation != 0:
+        resized_im = resized_im.rotate(rotation)
 
     return image_to_byte_array(resized_im)
 
@@ -56,32 +59,42 @@ class TileGraphic():
 
 
 class TurtleGraphic():
-    sprite: Optional[bytes] = None
+    dir_sprites: Optional[Dict[Direction, bytes]] = None
 
-    def __init__(self, win, center_x, center_y, i, j, tile_size_px):
+    def __init__(self, win, center_x, center_y, i, j, dir: Direction, tile_size_px):
         self.win = win
         self.i = i
         self.j = j
+        self.dir = dir
         self.tile_size_px = tile_size_px
 
-        if not TurtleGraphic.sprite:
-            TurtleGraphic.sprite = generate_graphics(
-                f'turtle.png', tile_size_px//SPRITE_SIZE_PX)
+        if not TurtleGraphic.dir_sprites:
+            TurtleGraphic.dir_sprites = {direction: generate_graphics(
+                f'turtle.png', tile_size_px//SPRITE_SIZE_PX, angle) for direction, angle in zip([Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST], [-180, -90, 0, 90])}
 
         self.image = ImageGraphic(
-            Point(center_x, center_y), tile_size_px, tile_size_px, TurtleGraphic.sprite)
+            Point(center_x, center_y), tile_size_px, tile_size_px, TurtleGraphic.dir_sprites[self.dir])
 
         self.image.draw(self.win)
 
-    def move_to_tile(self, pos: Tuple[int, int]):
-        x = (pos[0]-self.i)*self.tile_size_px
-        y = (pos[1]-self.j)*self.tile_size_px
-        # NOTE: May introduce rounding errors
-        dx = x/TURTLE_MOVEMENT_FRAMES
-        dy = y/TURTLE_MOVEMENT_FRAMES
-        self._move_on_line(dx, dy)
-        self.i = pos[0]
-        self.j = pos[1]
+    def move(self, pos: Tuple[int, int], dir:Direction):
+        if pos != (self.i, self.j):
+            x = (pos[0]-self.i)*self.tile_size_px
+            y = (pos[1]-self.j)*self.tile_size_px
+            # NOTE: May introduce rounding errors
+            dx = x/TURTLE_MOVEMENT_FRAMES
+            dy = y/TURTLE_MOVEMENT_FRAMES
+            self._move_on_line(dx, dy)
+            self.i = pos[0]
+            self.j = pos[1]
+            
+        elif dir != self.dir:
+            if TurtleGraphic.dir_sprites:
+                self.image.img.put(TurtleGraphic.dir_sprites[dir])
+            else:
+                raise Exception('TurtleGraphic sprites have not yet been initialized!')
+            self.dir = dir
+
 
     def _move_on_line(self, dx, dy):
         for i in range(TURTLE_MOVEMENT_FRAMES):
@@ -168,11 +181,12 @@ class Display():
 
     def map_turtle_to_graphics(self, game: "Game") -> TurtleGraphic:
         i, j = game.player.pos
+        dir = game.player.dir
         turtle_x = (i+0.5) * \
             self.tile_size_px+self.level_offset_x
         turtle_y = (j+0.5) * \
             self.tile_size_px+self.level_offset_y
-        return TurtleGraphic(self.win, turtle_x, turtle_y, i, j, self.tile_size_px)
+        return TurtleGraphic(self.win, turtle_x, turtle_y, i, j, dir, self.tile_size_px)
 
     def calc_tile_scale(self) -> int:
         """
@@ -203,8 +217,8 @@ class Display():
         for flag_graphic in remove_list:
             self.flag_graphics.remove(flag_graphic)
 
-        self.turtle_graphics.move_to_tile(
-            observable_game.player.pos)
+        self.turtle_graphics.move(
+            observable_game.player.pos, observable_game.player.dir)
 
         self.pause()
 

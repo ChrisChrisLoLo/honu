@@ -5,7 +5,7 @@ import re
 
 import pkg_resources
 
-from honu.game import Game, Tile, Player, Flag, WinCondition
+from honu.game import Direction, Game, Tile, Player, Flag, WinCondition
 from honu.testcases import ITestCase, BaseTest, FlagTestCase, OutputTestCase, LevelTestCase
 from honu.display import Display
 
@@ -41,7 +41,7 @@ class Honu():
         # Load game
         game = Game(self.game_tiles,
                     Player((
-                        self.player_start_i, self.player_start_j)),
+                        self.player_start_i, self.player_start_j),Direction.SOUTH),
                     self.flags)
         # Run Code
         if self.enable_display:
@@ -94,7 +94,7 @@ class HonuTest():
     def create_game_from_level_data(self, level_data):
 
         player_data = level_data['player']
-        player = Player((player_data['pos']['x'], player_data['pos']['y']))
+        player = Player((player_data['pos']['x'], player_data['pos']['y']),Direction(player_data['dir'].upper()))
 
         flags: List[Flag] = []
         for flag_data in level_data['flags']:
