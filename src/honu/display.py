@@ -52,7 +52,7 @@ class TileGraphic():
 
     def set_fill(self, fill_name):
         self.image.img.put(TileGraphic.tile_sprites[fill_name])
-        pass
+        self.fill_name = fill_name
 
 
 class TurtleGraphic():

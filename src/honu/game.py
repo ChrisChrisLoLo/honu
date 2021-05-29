@@ -1,4 +1,4 @@
-from typing import List, Tuple, TYPE_CHECKING
+from typing import Dict, List, Tuple, TYPE_CHECKING
 from enum import Enum
 
 if TYPE_CHECKING:
@@ -30,9 +30,28 @@ class Tile(Enum):
     BROWN = 'brown'
 
 
+class Direction(Enum):
+    NORTH = 'N'
+    EAST = 'E'
+    SOUTH = 'S'
+    WEST = 'W'
+
+
+# List of directions in NESW order
+dir_arr: List[Direction] = [d for d in Direction]
+
+dir_to_pos: Dict[Direction, Tuple[int, int]] = {
+    Direction.NORTH: (0, -1),
+    Direction.EAST: (1, 0),
+    Direction.SOUTH: (0, 1),
+    Direction.WEST: (-1, 0)
+}
+
+
 class Player():
-    def __init__(self, pos: Tuple[int, int]):
+    def __init__(self, pos: Tuple[int, int], dir: Direction):
         self.pos = pos
+        self.dir = dir
 
 
 class Flag():
@@ -85,6 +104,9 @@ class Game():
     def get_pos(self) -> Tuple[int, int]:
         return self.player.pos
 
+    def get_dir(self) -> str:
+        return self.player.dir.value
+
     def move(self, translation: Tuple[int, int]) -> bool:
         new_pos: Tuple[int, int] = (
             self.player.pos[X]+translation[X], self.player.pos[Y]+translation[Y])
@@ -93,7 +115,7 @@ class Game():
         is_out_of_y = not 0 <= new_pos[Y] <= self.height - 1
         if is_out_of_x or is_out_of_y:
             return False
-        
+
         is_on_empty_tile = self.level[new_pos[Y]][new_pos[X]] == Tile.EMPTY
         if is_on_empty_tile:
             return False
@@ -114,3 +136,22 @@ class Game():
 
     def right(self) -> bool:
         return self.move((1, 0))
+
+    def forward(self) -> bool:
+        # move forward
+        return self.move(dir_to_pos[self.player.dir])
+
+    def backward(self) -> bool:
+        # move forward in opposite direction
+        return self.move(dir_to_pos[dir_arr[(dir_arr.index(
+            self.player.dir)+2) % len(dir_arr)]])
+
+    def turn_left(self) -> bool:
+        self.player.dir = dir_arr[(dir_arr.index(
+            self.player.dir)-1) % len(dir_arr)]
+        return True
+
+    def turn_right(self) -> bool:
+        self.player.dir = dir_arr[(dir_arr.index(
+            self.player.dir)+1) % len(dir_arr)]
+        return True

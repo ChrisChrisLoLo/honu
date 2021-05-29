@@ -1,9 +1,10 @@
 from honu import Display, Game, Player, Flag, Tile
+from honu.game import Direction
 
 
 def test_display_creation():
     game = Game([[Tile.GREEN, Tile.YELLOW], [Tile.BLUE, Tile.EMPTY]],
-                Player((0, 0)),
+                Player((0, 0), Direction.SOUTH),
                 [Flag((1, 0))])
     display = Display(game, 600, 600, 0)
 
@@ -24,7 +25,7 @@ def test_display_creation():
 
 def test_display_move_on_flag():
     game = Game([[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]],
-                Player((0, 0)),
+                Player((0, 0), Direction.SOUTH),
                 [Flag((1, 0))])
     display = Display(game, 600, 600, 0)
 
@@ -41,7 +42,7 @@ def test_display_move_on_flag():
 
 def test_tile_update():
     game = Game([[Tile.GREEN, Tile.GREEN], [Tile.GREEN, Tile.GREEN]],
-                Player((0, 0)),
+                Player((0, 0), Direction.SOUTH),
                 [Flag((1, 0))])
     display = Display(game, 600, 600, 0)
 
