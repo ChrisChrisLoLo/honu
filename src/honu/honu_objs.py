@@ -144,8 +144,8 @@ class HonuTest():
                 display.close()
 
             if not test_case.is_passing():
-                print(f'{test_case.base_test.name} ... FAIL')
-                test_status += 'F'
+                print(f'{test_case.base_test.name} ... try again')
+                test_status += 'X'
                 failing_tests.append(test_case)
             else:
                 print(f'{test_case.base_test.name} ... ok')
