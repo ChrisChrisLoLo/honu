@@ -2,7 +2,7 @@
   "levelId": 1,
   "title": "capture_the_flag",
   "shortDescription": "Cross the line and capture the flag!",
-  "markdownDescription": "Cross the line and get the flag!\n\n\nYou will need to get all flags in order to win!\n\n\nHint: use `h.down()`",
+  "markdownDescription": "Cross the line and get the flag!\n\n\nYou will need to get all flags in order to win!\n\n\nHint: use `h.forward()`!\n",
   "difficulty": 1,
   "supportedLibVersion": "0.0.0",
   "levelSchemaVersion": "1.0.0",
@@ -17,31 +17,61 @@
         "level": [
           [
             "green",
-            "orange",
+            "grey",
+            "grey",
+            "yellow",
+            "grey",
+            "grey",
             "green"
           ],
           [
             "green",
-            "orange",
+            "grey",
+            "grey",
+            "grey",
+            "grey",
+            "grey",
             "green"
           ],
           [
-            "red",
-            "red",
-            "red"
+            "green",
+            "grey",
+            "grey",
+            "yellow",
+            "grey",
+            "grey",
+            "green"
+          ],
+          [
+            "green",
+            "grey",
+            "grey",
+            "grey",
+            "grey",
+            "grey",
+            "green"
+          ],
+          [
+            "green",
+            "grey",
+            "grey",
+            "yellow",
+            "grey",
+            "grey",
+            "green"
           ]
         ],
         "player": {
           "pos": {
-            "x": 1,
-            "y": 0
+            "x": 0,
+            "y": 2
           },
-          "dir": "S"
+          "dir": "E"
         },
         "flags": [
           {
             "pos": {
-              "x": 1,
+              "x": 6,
               "y": 2
             }
           }
