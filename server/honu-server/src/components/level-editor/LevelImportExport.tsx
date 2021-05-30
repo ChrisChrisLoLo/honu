@@ -30,7 +30,7 @@ export default function LevelImportExport(props: PropType) {
     const exportMetagameCopy = metagameToJson(exportMetagame)
 
     const exportName: string = `${exportMetagameCopy.levelId}-${exportMetagameCopy.title.toLowerCase().trim().replaceAll(' ', '_')}`
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportMetagameCopy, undefined, 2));
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportMetagameCopy, undefined, 2))
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute("href", dataStr)
     downloadAnchorNode.setAttribute("download", exportName + ".json")
@@ -41,7 +41,7 @@ export default function LevelImportExport(props: PropType) {
 
   function copyJsonToClipboard(exportMetagame: MetaGame): void {
     const exportMetagameCopy = metagameToJson(exportMetagame)
-    navigator.clipboard.writeText(JSON.stringify(exportMetagameCopy))
+    navigator.clipboard.writeText(JSON.stringify(exportMetagameCopy, undefined, 2))
 
     toast({
       title: "JSON Copied!",
