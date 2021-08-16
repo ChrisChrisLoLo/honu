@@ -1,9 +1,7 @@
-import { Center, Heading, HStack } from '@chakra-ui/layout';
-import { Box, Flex, Stack } from '@chakra-ui/react';
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import React, { useState } from 'react';
-import Link from '../components/Link';
-import Navbar from '../components/Navbar';
+import { Col, Container, Row } from 'react-bootstrap';
+// import Navbar from '../components/Navbar';
 import { MetaGameDesc } from '../types/MetaGame';
 
 
@@ -14,23 +12,26 @@ const LevelsPage = ({ data }: { data: any }) => {
   return (
     <main>
       <title>Search Levels - Honu</title>
-      <Navbar />
-      <HStack>
-        <Box>
-          <Stack>
-            <Heading as="h1" size="lg">Search Levels</Heading>
-
-          </Stack>
-          <Stack>
-            {allLevels.map(level =>
-              <Box key={level.levelId}>
-                <Link color='teal.500' to={`/levels/${level.levelId}`}>
-                  Level {level.levelId}
-                </Link>
-              </Box>)}
-          </Stack>
-        </Box>
-      </HStack>
+      {/* <Navbar /> */}
+      <Container>
+        <Row>
+          <Col>
+            <h1>Search Levels</h1>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <div>
+              {allLevels.map(level =>
+                <div key={level.levelId}>
+                  <Link to={`/levels/${level.levelId}`}>
+                    Level {level.levelId}
+                  </Link>
+                </div>)}
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </main>
   )
 }

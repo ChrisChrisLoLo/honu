@@ -1,17 +1,20 @@
-import { Center, Heading, Stack } from "@chakra-ui/react"
+import { Container } from "@inlet/react-pixi"
 import * as React from "react"
-import Navbar from "../components/Navbar"
+import { Col, Row } from "react-bootstrap"
+// import Navbar from "../components/Navbar"
 
 const IndexPage = () => {
   return (
     <main >
       <title>Home Page</title>
-      <Navbar />
-      <Center>
-        <Stack>
-          <Heading as="h1" size="lg">Honu</Heading>
-        </Stack>
-      </Center>
+      {/* <Navbar /> */}
+      <Container>
+        <Row>
+          <Col>
+            <h1>Honu</h1>
+          </Col>
+        </Row>
+      </Container>
     </main>
   )
 }

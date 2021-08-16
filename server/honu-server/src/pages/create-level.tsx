@@ -1,8 +1,7 @@
-import { Center, Heading } from '@chakra-ui/layout';
-import { Stack } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import LevelCreationForm from '../components/level-editor/LevelCreationForm';
-import Navbar from '../components/Navbar';
+// import Navbar from '../components/Navbar';
 
 // markup
 const CreateLevelPage = () => {
@@ -10,13 +9,15 @@ const CreateLevelPage = () => {
   return (
     <main>
       <title>Create Honu level</title>
-      <Navbar />
-      <Center>
-        <Stack>
-          <Heading as="h1" size="lg">Create Honu level</Heading>
-          <LevelCreationForm />
-        </Stack>
-      </Center>
+      {/* <Navbar /> */}
+      <Container>
+        <Row>
+          <Col>
+            <h1>Create Honu level</h1>
+            <LevelCreationForm />
+          </Col>
+        </Row>
+      </Container>
     </main>
   )
 }

@@ -1,9 +1,10 @@
 import React from "react"
 import { MetaGame } from "../types/MetaGame";
-import Navbar from "../components/Navbar";
-import { Box, Heading, HStack, Text } from "@chakra-ui/react";
+// import Navbar from "../components/Navbar";
 import ReactMarkdown from "react-markdown";
 import TestCasePreview from "../components/level-detail/LevelPreviewTabs";
+import { Container } from "@inlet/react-pixi";
+import { Col, Row } from "react-bootstrap";
 
 interface PropsType {
   pageContext: any
@@ -24,29 +25,33 @@ export default function LevelDescriptionPageContent(props: PropsType) {
   return (
     <main>
       <title>Honu Level: {metagame.title}</title>
-      <Navbar />
-      <HStack>
-      <Box>
-        <Heading>
-          {metagame.title}
-        </Heading>
-        <Heading>
-          {metagame.shortDescription}
-        </Heading>
-        <Text>
-          Difficulty: {metagame.difficulty}/5
-        </Text>
-        <Text>
-          Win Condition: {capitalize(metagame.winCondition.replaceAll('_',' '))}
-        </Text>
-        <ReactMarkdown>
-          {metagame.markdownDescription}
-        </ReactMarkdown>
-      </Box>
-      <Box>
-        <TestCasePreview metagame={metagame}/>
-      </Box>
-      </HStack>
+      {/* <Navbar /> */}
+      <Container>
+        <Row>
+          <Col>
+            <div>
+              <h2>
+                {metagame.title}
+              </h2>
+              <h2>
+                {metagame.shortDescription}
+              </h2>
+              <p>
+                Difficulty: {metagame.difficulty}/5
+              </p>
+              <p>
+                Win Condition: {capitalize(metagame.winCondition.replaceAll('_',' '))}
+              </p>
+              <ReactMarkdown>
+                {metagame.markdownDescription}
+              </ReactMarkdown>
+            </div>
+          </Col>
+          <Col>
+            <TestCasePreview metagame={metagame}/>
+          </Col>
+        </Row>
+      </Container>
     </main>
   )
 }

@@ -1,6 +1,5 @@
-import { CopyIcon } from '@chakra-ui/icons';
-import { FormControl, FormHelperText, FormLabel, HStack, IconButton, Select} from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import { EntityType } from '../../types/EntityType';
 import { TestCase } from '../../types/TestCase';
 import { TileType } from '../../types/TileType';
@@ -37,28 +36,33 @@ export default function LevelCanvasEditor(props: PropType) {
 
   return (
     <>
-      <HStack>
-        <FormControl>
-          <FormLabel>Tile Type</FormLabel>
-          <Select value={tileToDraw} onChange={handleTileToDraw}>
-            {!props.isExpectedOutput &&
-              Object.keys(EntityType).map(key =>
-                <option key={key} value={(EntityType as any)[key]}>
-                  {`* ${(EntityType as any)[key]}`}
+      <div>
+        <Form>
+          <Form.Group>
+            <Form.Label>Tile Type</Form.Label>
+            <Form.Select value={tileToDraw} onChange={handleTileToDraw}>
+              {!props.isExpectedOutput &&
+                Object.keys(EntityType).map(key =>
+                  <option key={key} value={(EntityType as any)[key]}>
+                    {`* ${(EntityType as any)[key]}`}
+                  </option>)
+              }
+              {Object.keys(TileType).map(key =>
+                <option key={key} value={(TileType as any)[key]}>
+                  {(TileType as any)[key]}
                 </option>)
-            }
-            {Object.keys(TileType).map(key =>
-              <option key={key} value={(TileType as any)[key]}>
-                {(TileType as any)[key]}
-              </option>)
-            }
-          </Select>
-          <FormHelperText>Click on the tiles to color them</FormHelperText>
-        </FormControl>
+              }
+            </Form.Select>
+
+          </Form.Group>
+          <Form.Group>
+            <Form.Text>Click on the tiles to color them</Form.Text>
+          </Form.Group>
+        </Form>
         {props.isExpectedOutput &&
-          <IconButton aria-label={'Copy from level'} icon={<CopyIcon/>} onClick={copyFromInitLevel} />
+          <Button onClick={copyFromInitLevel}><i className="bi bi-clipboard"></i></Button>
         }
-      </HStack>
+      </div>
       <GameCanvas testCase={props.testCase} setTestCase={props.setTestCase} selectedDrawType={tileToDraw} isExpectedOutput={props.isExpectedOutput} readOnly={false}></GameCanvas>
     </>
   )

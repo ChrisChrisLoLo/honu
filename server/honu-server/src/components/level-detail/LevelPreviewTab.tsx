@@ -1,4 +1,3 @@
-import { Stack, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { TestCase } from '../../types/TestCase';
 import { WinCondType } from '../../types/WinCondType';
@@ -16,27 +15,26 @@ export default function LevelPreviewTab(props: PropType) {
   return (
     <>
       {
-
         props.isActive &&
-        <Stack>
-          <Text>Test Case Description</Text>
-          <Text>{props.testCase.name}</Text>
+        <div>
+          <h2>Test Case Description</h2>
+          <p>{props.testCase.name}</p>
           <GameCanvas testCase={props.testCase} selectedDrawType={null} setTestCase={() => { }} readOnly={true} isExpectedOutput={false} />
           {
             props.winCondition === WinCondType.CALC_OUTPUT &&
             <>
-              <Text>Expected output</Text>
-              <Text>{props.testCase.expectedOutput}</Text>
+              <p>Expected output</p>
+              <p>{props.testCase.expectedOutput}</p>
             </>
           }
           {
             props.winCondition === WinCondType.MODIFY_BOARD &&
             <>
-              <Text>Expected Output</Text>
+              <p>Expected Output</p>
               <GameCanvas testCase={props.testCase} selectedDrawType={null} setTestCase={() => { }} readOnly={true} isExpectedOutput={true} />
             </>
           }
-        </Stack>
+        </div>
       }
     </>
   )

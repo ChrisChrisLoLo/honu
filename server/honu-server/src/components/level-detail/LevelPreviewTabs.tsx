@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Tab, Tabs } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { MetaGame } from '../../types/MetaGame';
 import { TestCase } from '../../types/TestCase';
@@ -16,21 +16,12 @@ export default function LevelPreviewTabs(props: PropType) {
 
   return (
     <>
-      <Tabs variant="enclosed" onChange={(index) => setActiveTabIndex(index)}>
-        <TabList>
+      <Tabs>
           {testCases.map((testCase, i) =>
-            <Tab key={i}>
-              {testCase.name}
-            </Tab>)}
-        </TabList>
-
-        <TabPanels>
-          {testCases.map((testCase, i) =>
-            <TabPanel key={i}>
+            <Tab eventKey={testCase.name} title={testCase.name} key={i}>
               <LevelPreviewTab testCase={testCase} winCondition={props.metagame.winCondition} isActive={i === activeTabIndex} />
-            </TabPanel>
-          )}
-        </TabPanels>
+            </Tab>)
+          }
       </Tabs>
     </>
   )

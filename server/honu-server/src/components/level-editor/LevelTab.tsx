@@ -1,5 +1,5 @@
-import { FormControl, FormHelperText, FormLabel, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
 import { DirectionType } from '../../types/Directions';
 import { TestCase } from '../../types/TestCase';
 import { TileType } from '../../types/TileType';
@@ -87,82 +87,60 @@ export default function LevelTab(props: PropType) {
     <>
       {
         props.isActive &&
-        <Stack>
-          <FormControl>
-            <FormLabel>Test Case Description</FormLabel>
-            <Input value={testCase.name} name="name" onChange={(e) => handleTestCaseTitleChange(e)} />
-          </FormControl>
-          <HStack>
-            <FormControl>
-              <FormLabel>Level Width</FormLabel>
-              <NumberInput min={1} value={width} name="width" onChange={(valueString) => handleDimChange(valueString, true)}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Level Height</FormLabel>
-              <NumberInput min={1} value={height} name="height" onChange={(valueString) => handleDimChange(valueString, false)}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-          </HStack>
-          <HStack>
-            <FormControl>
-              <FormLabel>Turtle X</FormLabel>
-              <NumberInput min={0} max={width - 1} value={testCase.levelData.player.pos.x} onChange={(valueString) => handleCoordChange(valueString, true)}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Turtle Y</FormLabel>
-              <NumberInput min={0} max={height - 1} value={testCase.levelData.player.pos.y} onChange={(valueString) => handleCoordChange(valueString, false)}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Turtle Dir</FormLabel>
-              <Select value={testCase.levelData.player.dir} onChange={handleDirChange}>
-                {Object.keys(DirectionType).map(key =>
-                  <option key={key} value={(DirectionType as any)[key]}>
-                    {(DirectionType as any)[key]}
-                  </option>)
-                }
-              </Select>
-            </FormControl>
-          </HStack>
-          <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={false} />
-          {
-            props.winCondition === WinCondType.CALC_OUTPUT &&
-            <FormControl>
-              <FormLabel>Expected output</FormLabel>
-              <Input value={testCase.expectedOutput} name="output" onChange={handleOutputChange} />
-              <FormHelperText>Can be an integer or a string</FormHelperText>
-            </FormControl>
-          }
-          {
-            props.winCondition === WinCondType.MODIFY_BOARD &&
-            <>
-              <Text>Expected Output</Text>
-              <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={true} />
-            </>
-          }
-        </Stack>
+        <div>
+          <Form>
+            <Form.Group>
+              <Form.Label>Test Case Description</Form.Label>
+              <Form.Control value={testCase.name} name="name" onChange={(e) => handleTestCaseTitleChange(e)} />
+            </Form.Group>
+            <div>
+              <Form.Group>
+                <Form.Label>Level Width</Form.Label>
+                <Form.Control type="number" min={1} value={width} name="width" onChange={(e) => handleDimChange(e.target.value, true)}/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Level Height</Form.Label>
+                <Form.Control type="number" min={1} value={height} name="height" onChange={(e) => handleDimChange(e.target.value, false)}/>
+              </Form.Group>
+            </div>
+            <div>
+              <Form.Group>
+                <Form.Label>Turtle X</Form.Label>
+                <Form.Control type="number" min={0} max={width - 1} value={testCase.levelData.player.pos.x} onChange={(e) => handleCoordChange(e.target.value, true)}/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Turtle Y</Form.Label>
+                <Form.Control type="number" min={0} max={height - 1} value={testCase.levelData.player.pos.y} onChange={(e) => handleCoordChange(e.target.value, false)}/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Turtle Dir</Form.Label>
+                <Form.Select value={testCase.levelData.player.dir} onChange={handleDirChange}>
+                  {Object.keys(DirectionType).map(key =>
+                    <option key={key} value={(DirectionType as any)[key]}>
+                      {(DirectionType as any)[key]}
+                    </option>)
+                  }
+                </Form.Select>
+              </Form.Group>
+            </div>
+            <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={false} />
+            {
+              props.winCondition === WinCondType.CALC_OUTPUT &&
+              <Form.Group>
+                <Form.Label>Expected output</Form.Label>
+                <Form.Control value={testCase.expectedOutput} name="output" onChange={handleOutputChange} />
+                <p>Can be an integer or a string</p>
+              </Form.Group>
+            }
+            {
+              props.winCondition === WinCondType.MODIFY_BOARD &&
+              <>
+                <p>Expected Output</p>
+                <LevelCanvasEditor testCase={testCase} winCondition={props.winCondition} setTestCase={props.setTestCase} isExpectedOutput={true} />
+              </>
+            }
+          </Form>
+        </div>
       }
     </>
   )

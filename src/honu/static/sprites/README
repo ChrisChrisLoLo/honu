@@ -1,6 +1,9 @@
 Tile colors are from https://chakra-ui.com/docs/theming/theme#colors
-All folors are 
 
 Most colors are COLOR 400 (ex. Red 400)
 Black is Gray 700
 Brown is Yellow 700
+
+Files must be in .gif format to prevent problems in older versions of Tkinter.
+Not doing so may result in incompatibility with macOS and perhaps Windows.
+https://github.com/PySimpleGUI/PySimpleGUI/issues/1369

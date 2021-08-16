@@ -1,5 +1,5 @@
-import { Button, HStack, Input, Stack, Text, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { Button, Toast } from 'react-bootstrap';
 import { MetaGame } from '../../types/MetaGame';
 import { TestCase } from '../../types/TestCase';
 import { WinCondType } from '../../types/WinCondType';
@@ -11,8 +11,9 @@ interface PropType {
 }
 
 export default function LevelImportExport(props: PropType) {
+  const [showToast, setShowToast] = useState(true);
 
-  const toast = useToast()
+  const toggleShowToast = () => setShowToast(!showToast);
 
   function metagameToJson(metagame: MetaGame): MetaGame {
     const metagameCopy: MetaGame = JSON.parse(JSON.stringify(metagame));
@@ -42,13 +43,6 @@ export default function LevelImportExport(props: PropType) {
   function copyJsonToClipboard(exportMetagame: MetaGame): void {
     const exportMetagameCopy = metagameToJson(exportMetagame)
     navigator.clipboard.writeText(JSON.stringify(exportMetagameCopy, undefined, 2))
-
-    toast({
-      title: "JSON Copied!",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-    })
   }
 
 
@@ -80,18 +74,25 @@ export default function LevelImportExport(props: PropType) {
   }
 
   return (
-    <Stack>
-      <Text>Export</Text>
-      <HStack>
-        <Button onClick={() => downloadMetagameAsJson(props.metagame)}>
-          Download
-        </Button>
-        <Button onClick={() => copyJsonToClipboard(props.metagame)}>
-          Copy JSON
-        </Button>
-      </HStack>
-      <Text>Import</Text>
-      <Input type="file" onChange={handleMetagameFileInput} ></Input>
-    </Stack>
+    <>
+      <div>
+        <h3>Export</h3>
+        <div>
+          <Button onClick={() => downloadMetagameAsJson(props.metagame)}>
+            Download
+          </Button>
+          <Button onClick={() => copyJsonToClipboard(props.metagame)}>
+            Copy JSON
+          </Button>
+        </div>
+        <p>Import</p>
+        <input type="file" onChange={handleMetagameFileInput} ></input>
+      </div>
+      <Toast onClose={() => setShowToast(false)} show={showToast} delay={2000} autohide>
+        <Toast.Header>
+          JSON Copied!
+        </Toast.Header>
+      </Toast>
+    </>
   )
 }

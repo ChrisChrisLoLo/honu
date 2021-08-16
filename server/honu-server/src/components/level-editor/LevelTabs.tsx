@@ -1,5 +1,3 @@
-import { CloseIcon } from '@chakra-ui/icons';
-import { IconButton, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DirectionType } from '../../types/Directions';
 import { MetaGame } from '../../types/MetaGame';
@@ -51,23 +49,24 @@ export default function LevelTabs(props: PropType) {
 
 
   return (
-    <Tabs variant="enclosed" onChange={(index) => setActiveTabIndex(index)}>
-      <TabList>
-        {testCases.map((testCase, i) =>
-          <Tab key={i}>
-            {testCase.name}
-            <IconButton size={'xs'} style={{marginLeft:10}} aria-label={"Close tab"} icon={<CloseIcon/>} onClick={() => props.setTestCases(testCases.filter((el) => el !== testCase))}/>
-          </Tab>)}
-        <Tab onClick={() => props.setTestCases([...testCases, defaultTestCase])}>Add</Tab>
-      </TabList>
+    // <Tabs variant="enclosed" onChange={(index) => setActiveTabIndex(index)}>
+    //   <TabList>
+    //     {testCases.map((testCase, i) =>
+    //       <Tab key={i}>
+    //         {testCase.name}
+    //         <IconButton size={'xs'} style={{marginLeft:10}} aria-label={"Close tab"} icon={<CloseIcon/>} onClick={() => props.setTestCases(testCases.filter((el) => el !== testCase))}/>
+    //       </Tab>)}
+    //     <Tab onClick={() => props.setTestCases([...testCases, defaultTestCase])}>Add</Tab>
+    //   </TabList>
 
-      <TabPanels>
-        {testCases.map((testCase, i) =>
-          <TabPanel key={i}>
-            <LevelTab testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} isActive={i===activeTabIndex}/>
-          </TabPanel>
-        )}
-      </TabPanels>
-    </Tabs>
+    //   <TabPanels>
+    //     {testCases.map((testCase, i) =>
+    //       <TabPanel key={i}>
+    //         <LevelTab testCase={testCase} winCondition={props.metagame.winCondition} setTestCase={createSetTestCase(i)} isActive={i===activeTabIndex}/>
+    //       </TabPanel>
+    //     )}
+    //   </TabPanels>
+    // </Tabs>
+    <></>
   )
 }

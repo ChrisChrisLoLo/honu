@@ -1,5 +1,5 @@
-import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Textarea, useDisclosure } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
 import { DirectionType } from '../../types/Directions';
 import { MetaGame } from '../../types/MetaGame';
@@ -10,7 +10,10 @@ import LevelImportExport from './LevelImportExport';
 import LevelTabs from './LevelTabs';
 
 export default function LevelCreationForm() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const [metagame, setMetagame] = useState<MetaGame>(
     {
@@ -90,80 +93,67 @@ export default function LevelCreationForm() {
 
   return (
     <>
-      <Flex>
-        <Box>
-          <Stack>
-            <FormControl>
-              <FormLabel>Id</FormLabel>
-              <NumberInput min={0} value={metagame.levelId} name="levelId" onChange={(valueString) => handleIdInput(valueString)}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Title</FormLabel>
-              <Input value={metagame.title} name="title" onChange={handleMetagameChange} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Short Description</FormLabel>
-              <Input value={metagame.shortDescription} name="shortDescription" onChange={handleMetagameChange} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Markdown Description</FormLabel>
-              <Button onClick={onOpen}>Preview</Button>
-              <Textarea value={metagame.markdownDescription} name="markdownDescription" onChange={handleMetagameChange} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Difficulty</FormLabel>
-              <NumberInput min={1} max={5} value={metagame.difficulty} name="difficulty" onChange={(valueString) => handleDifficultyInput(valueString)}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Level Schema Version</FormLabel>
-              <Input value={metagame.levelSchemaVersion} name="levelSchemaVersion" onChange={handleMetagameChange} />
-              <FormHelperText>Leave as is if unsure</FormHelperText>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Supported Library Version</FormLabel>
-              <Input value={metagame.supportedLibVersion} name="supportedLibVersion" onChange={handleMetagameChange} />
-              <FormHelperText>Leave as is if unsure</FormHelperText>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Tags (words seperated by ',')</FormLabel>
-              <Input name="tags" onChange={handleTagInput} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Win Condition</FormLabel>
-              <Select value={metagame.winCondition} name="winCondition" onChange={handleMetagameChange}>
-                <option value={WinCondType.CALC_OUTPUT}>{WinCondType.CALC_OUTPUT}</option>
-                <option value={WinCondType.GET_ALL_FLAGS}>{WinCondType.GET_ALL_FLAGS}</option>
-                <option value={WinCondType.MODIFY_BOARD}>{WinCondType.MODIFY_BOARD}</option>
-              </Select>
-            </FormControl>
+      <div>
+          <div>
+            <Form>
+              <Form.Group>
+                <Form.Label>Id</Form.Label>
+                <Form.Control type="number" value={metagame.levelId} name="levelId" onChange={(e) => handleIdInput(e.target.value)}></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Title</Form.Label>
+                <Form.Control value={metagame.title} name="title" onChange={handleMetagameChange}></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Short Description</Form.Label>
+                <Form.Control value={metagame.shortDescription} name="shortDescription" onChange={handleMetagameChange}></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Markdown Description</Form.Label>
+                <Button onClick={handleShow}>Preview</Button>
+                <Form.Control type="textarea" value={metagame.markdownDescription} name="markdownDescription" onChange={handleMetagameChange} />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Difficulty</Form.Label>
+                <Form.Control type="number" min={1} max={5} value={metagame.difficulty} name="difficulty" onChange={(e) => handleDifficultyInput(e.target.value)}></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Level Schema Version</Form.Label>
+                <Form.Control value={metagame.levelSchemaVersion} name="levelSchemaVersion" onChange={handleMetagameChange} />
+                <p>Leave as is if unsure</p>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Supported Library Version</Form.Label>
+                <Form.Control value={metagame.supportedLibVersion} name="supportedLibVersion" onChange={handleMetagameChange} />
+                <p>Leave as is if unsure</p>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Tags (words seperated by ',')</Form.Label>
+                <Form.Control name="tags" onChange={handleTagInput} />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Win Condition</Form.Label>
+                <Form.Select value={metagame.winCondition} name="winCondition" onChange={handleMetagameChange}>
+                  <option value={WinCondType.CALC_OUTPUT}>{WinCondType.CALC_OUTPUT}</option>
+                  <option value={WinCondType.GET_ALL_FLAGS}>{WinCondType.GET_ALL_FLAGS}</option>
+                  <option value={WinCondType.MODIFY_BOARD}>{WinCondType.MODIFY_BOARD}</option>
+                </Form.Select>
+              </Form.Group>
+            </Form>
             <LevelImportExport metagame={metagame} setMetagame={setMetagame}/>
-          </Stack>
-        </Box>
-        <Box>
+          </div>
+        <div>
           <LevelTabs metagame={metagame} setTestCases={setTestCases} />
-        </Box>
-      </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <ReactMarkdown>{metagame.markdownDescription}</ReactMarkdown>
-          </ModalBody>
-        </ModalContent>
+        </div>
+      </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          Modal Title
+        </Modal.Header>
+        <Modal.Body>
+          <ReactMarkdown>{metagame.markdownDescription}</ReactMarkdown>
+        </Modal.Body>
       </Modal>
     </>
   )
